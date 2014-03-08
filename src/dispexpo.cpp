@@ -26,6 +26,7 @@ NPtweedieRESULT CDispexpo::ComputeWorkingResponse
 {
 	NPtweedieRESULT hr = NPtweedie_OK;
     unsigned long i = 0;
+    double dF = 0.0;
     
     if((adY == NULL) || (adF == NULL) || (adZ == NULL) || (adWeight == NULL))
     {
@@ -62,36 +63,24 @@ double CDispexpo::Deviance
     unsigned long i=0;
     double dL = 0.0;
     double dW = 0.0;
+    double dF = 0.0;
     
 	if(adOffset == NULL)
     {
-        for(i=0; i<cLength; i++)
-        {
-            if(adY[i] > adF[i])
-            {
-                dL += adWeight[i]*dAlpha*(adY[i] - adF[i])*(adY[i] - adF[i]);
-            }
-            else
-            {
-                dL += adWeight[i]*(1.0-dAlpha)*(adY[i] - adF[i])*(adY[i] - adF[i]);
-            }
-            dW += adWeight[i];
-        }
+      	for(i=0; i<cLength; i++)
+      	{
+         	dL += adWeight[i] * (adY[i] * exp((1-dAlpha) * adF[i]) / (dAlpha - 1) + exp((2-dAlpha)* adF[i]) / (2 - dAlpha));
+         	dW += adWeight[i];
+      	}
     }
 	else
 	{
-        for(i=0; i<cLength; i++)
-        {
-            if(adY[i] > adF[i] + adOffset[i])
-            {
-                dL += adWeight[i]*dAlpha*(adY[i]-adOffset[i]-adF[i])*(adY[i]-adOffset[i]-adF[i]);
-            }
-            else
-            {
-                dL += adWeight[i]*(1.0-dAlpha)*(adY[i]-adOffset[i]-adF[i])*(adY[i]-adOffset[i]-adF[i]);
-            }
-            dW += adWeight[i];
-        }
+      	for(i=0; i<cLength; i++)
+      	{
+         	dF = adF[i] + adOffset[i];
+         	dL += adWeight[i] * (adY[i] * exp((1-dAlpha) * dF) / (dAlpha - 1) + exp((2-dAlpha)* dF) / (2 - dAlpha));
+         	dW += adWeight[i];
+      	}
     }
 	
     return dL/dW;
