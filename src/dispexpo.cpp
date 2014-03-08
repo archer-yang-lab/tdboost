@@ -33,19 +33,10 @@ NPtweedieRESULT CDispexpo::ComputeWorkingResponse
         goto Error;
     }
     
-    if(adOffset == NULL)
-    {
-		for(i=0; i<nTrain; i++)
-	    {
-			adZ[i] = (adY[i] > adF[i]) ? dAlpha*(adY[i]-adF[i]) : (1.0-dAlpha)*(adY[i]-adF[i]);
-	    }
-    }
-	else
+	for(i=0; i<nTrain; i++)
 	{
-		for(i=0; i<nTrain; i++)
-	    {
-			adZ[i] = (adY[i] > adF[i]+adOffset[i]) ? dAlpha*(adY[i]-adOffset[i]-adF[i]) : (1.0-dAlpha)*(adY[i]-adOffset[i]-adF[i]);
-	    }
+		dF = adF[i] + ((adOffset==NULL) ? 0.0 : adOffset[i]);
+		adZ[i] = - adY[i] * exp((1 - dAlpha) * dF) + exp((2 - dAlpha)*dF);
 	}
     
 Cleanup:
