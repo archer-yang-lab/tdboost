@@ -1,18 +1,18 @@
 //  NPtweedie by Yi Yang and Hui Zou  Copyright (C) 2012
-#include "expectile.h"
+#include "dispexpo.h"
 
-CExpectile::CExpectile(double dAlpha)
+CDispexpo::CDispexpo(double dAlpha)
 {
     this->dAlpha = dAlpha;
 }
 
-CExpectile::~CExpectile()
+CDispexpo::~CDispexpo()
 {
 
 }
 
 
-NPtweedieRESULT CExpectile::ComputeWorkingResponse
+NPtweedieRESULT CDispexpo::ComputeWorkingResponse
 (
     double *adY,
     double *adMisc,
@@ -58,7 +58,7 @@ Error:
 
 
 
-double CExpectile::Deviance
+double CDispexpo::Deviance
 (
     double *adY,
     double *adMisc,
@@ -111,7 +111,7 @@ double CExpectile::Deviance
 
 
 
-NPtweedieRESULT CExpectile::InitF
+NPtweedieRESULT CDispexpo::InitF
 (
     double *adY,
     double *adMisc,
@@ -195,7 +195,7 @@ NPtweedieRESULT CExpectile::InitF
 
 
 
-NPtweedieRESULT CExpectile::FitBestConstant
+NPtweedieRESULT CDispexpo::FitBestConstant
 (
     double *adY,
     double *adMisc,
@@ -296,7 +296,7 @@ NPtweedieRESULT CExpectile::FitBestConstant
 }
 
 
-double CExpectile::BagImprovement
+double CDispexpo::BagImprovement
 (
     double *adY,
     double *adMisc,

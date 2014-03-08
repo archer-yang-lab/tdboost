@@ -20,7 +20,7 @@
 #include<vector>
 #include "dataset.h"
 #include "distribution.h"
-#include "expectile.h"
+#include "dispexpo.h"
 #include "NPtweedie_engine.h"
 
 typedef vector<char> VEC_CATEGORIES;

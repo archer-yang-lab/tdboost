@@ -6,14 +6,14 @@
 #include <algorithm>
 #include "distribution.h"
 
-class CExpectile: public CDistribution
+class CDispexpo: public CDistribution
 {
 
 public:
 
-    CExpectile(double dAlpha);
+    CDispexpo(double dAlpha);
 
-    virtual ~CExpectile();
+    virtual ~CDispexpo();
 
     NPtweedieRESULT ComputeWorkingResponse(double *adY,
                                    double *adMisc,
