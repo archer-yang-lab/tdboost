@@ -37,7 +37,7 @@ NPtweedieRESULT CDispexpo::ComputeWorkingResponse
 	for(i=0; i<nTrain; i++)
 	{
 		dF = adF[i] + ((adOffset==NULL) ? 0.0 : adOffset[i]);
-		adZ[i] = - adY[i] * exp((1 - dAlpha) * dF) + exp((2 - dAlpha)*dF);
+		adZ[i] = -adY[i] * exp((1.0-dAlpha) * dF) + exp((2.0-dAlpha)*dF);
 	}
     
 Cleanup:
@@ -69,7 +69,7 @@ double CDispexpo::Deviance
     {
       	for(i=0; i<cLength; i++)
       	{
-         	dL += adWeight[i] * (adY[i] * exp((1-dAlpha) * adF[i]) / (dAlpha - 1) + exp((2-dAlpha)* adF[i]) / (2 - dAlpha));
+         	dL += adWeight[i] * (adY[i] * exp((1.0-dAlpha) * adF[i]) / (dAlpha-1.0) + exp((2.0-dAlpha)* adF[i]) / (2.0-dAlpha));
          	dW += adWeight[i];
       	}
     }
@@ -78,7 +78,7 @@ double CDispexpo::Deviance
       	for(i=0; i<cLength; i++)
       	{
          	dF = adF[i] + adOffset[i];
-         	dL += adWeight[i] * (adY[i] * exp((1-dAlpha) * dF) / (dAlpha - 1) + exp((2-dAlpha)* dF) / (2 - dAlpha));
+         	dL += adWeight[i] * (adY[i] * exp((1.0-dAlpha) * dF) / (dAlpha-1.0) + exp((2.0-dAlpha)* dF) / (2.0-dAlpha));
          	dW += adWeight[i];
       	}
     }
@@ -101,70 +101,28 @@ NPtweedieRESULT CDispexpo::InitF
     unsigned long cLength
 )
 {
-        double dOffset=0.0;
+	    unsigned long i=0;
+   	    double dTemp = 0.0;
 
-        vector<double> Yorder;
-        Yorder.resize(cLength);
-        Yorder.assign(Yorder.size(),0.0);
-
-        for(unsigned long i=0;i<cLength;i++) 
-        {
-				dOffset = (adOffset==NULL) ? 0.0 : adOffset[i];
-                Yorder[i] = adY[i] - dOffset;
-        }
-
-        sort(Yorder.begin(),Yorder.end());
-        double Deviance;
-        double test;
-        unsigned long begin=0;
-        unsigned long end=cLength-1;
-
-             while (end>begin+1) 
-             {
-                     Deviance=0;
-                     test=floor(double(begin+end)/2.0);
-                     for (unsigned long j=0; j<test; j++)
-                     {
-                             Deviance += (1.0-dAlpha)*(Yorder[j]-Yorder[test]);
-                     }
-
-                     for (unsigned long j=cLength-1;j>test;j--) 
-                     {
-                             Deviance += dAlpha*(Yorder[j]-Yorder[test]);
-                     }
-
-                     if(Deviance>0) 
-                     {
-                             begin=test;
-                     }
-
-                     else
-                     {
-                             end=test;
-                     }
-             }
-
-             double Pnum=0;
-             for (unsigned long j=0;j<(begin+1);j++) 
-             {
-                     Pnum += (1.0-dAlpha)*(Yorder[j]);
-             }
-
-             for (unsigned long j=cLength-1;j>(end-1);j--) 
-             {
-                     Pnum += dAlpha*(Yorder[j]);
-             }
-
-             if (((1.0-dAlpha)*end + dAlpha*(cLength-end))==0)
-             {
-                     Pnum=0.0;  
-             }
-             else
-             {
-                     Pnum=Pnum / ((1.0-dAlpha)*end + dAlpha*(cLength-end));
-             }       	
-	
-        dInitF = Pnum;
+        // Newton method for solving for F
+        // should take about 3-6 iterations.
+        double dNum=0.0;         // numerator
+        double dDen=0.0;         // denominator
+        double dNewtonStep=1.0;  // change
+        dInitF = 0.0;
+//        while(fabs(dNewtonStep) > 0.0001)
+//        {
+            dNum=0.0;
+            dDen=0.0;
+            for(i=0; i<cLength; i++)
+            {
+				dTemp = dInitF + ((adOffset==NULL) ? 0.0 : adOffset[i]);
+                dNum += adWeight[i]*(-adY[i] * exp((1.0-dAlpha) * dTemp) + exp((2.0-dAlpha)*dTemp));
+                dDen += adWeight[i]*(-adY[i] * (1.0-dAlpha) * exp((1.0-dAlpha) * dTemp) + (2.0-dAlpha) * exp((2.0-dAlpha)*dTemp));
+            }
+            dNewtonStep = -dNum/dDen;
+            dInitF += dNewtonStep;
+//        }
    
         return NPtweedie_OK;
 
@@ -302,8 +260,8 @@ double CDispexpo::BagImprovement
         {
 			dF = adF[i] + ((adOffset==NULL) ? 0.0 : adOffset[i]);
 			ddF = dF + dStepSize*adFadj[i];
-         	dL += adWeight[i] * (adY[i] * exp((1-dAlpha) * dF) / (dAlpha - 1) + exp((2-dAlpha)* dF) / (2 - dAlpha));
-         	dLadj += adWeight[i] * (adY[i] * exp((1-dAlpha) * ddF) / (dAlpha - 1) + exp((2-dAlpha)* ddF) / (2 - dAlpha));    
+         	dL += adWeight[i] * (adY[i] * exp((1.0-dAlpha) * dF) / (dAlpha-1.0) + exp((2.0-dAlpha)* dF) / (2.0-dAlpha));
+         	dLadj += adWeight[i] * (adY[i] * exp((1.0-dAlpha) * ddF) / (dAlpha-1.0) + exp((2.0-dAlpha)* ddF) / (2.0-dAlpha));    
             dW += adWeight[i];
         }
     }
