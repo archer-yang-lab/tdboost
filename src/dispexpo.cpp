@@ -11,8 +11,8 @@ CDispexpo::~CDispexpo()
 
 }
 
-
-NPtweedieRESULT CDispexpo::ComputeWorkingResponse
+// compute gradient function
+NPtweedieRESULT CDispexpo::ComputeWorkingResponse 
 (
     double *adY,
     double *adMisc,
@@ -33,12 +33,21 @@ NPtweedieRESULT CDispexpo::ComputeWorkingResponse
         hr = NPtweedie_INVALIDARG;
         goto Error;
     }
-    
-	for(i=0; i<nTrain; i++)
-	{
-		dF = adF[i] + ((adOffset==NULL) ? 0.0 : adOffset[i]);
-		adZ[i] = -adY[i] * exp((1.0-dAlpha) * dF) + exp((2.0-dAlpha)*dF);
-	}
+    if(adOffset == NULL)
+    {
+        for(i=0; i<nTrain; i++)
+        {
+			adZ[i] = -adY[i] * exp((1.0-dAlpha)*adF[i]) + exp((2.0-dAlpha)*adF[i]);
+        }
+    }
+    else
+    {
+        for(i=0; i<nTrain; i++)
+        {
+			dF = adF[i] + adOffset[i];
+			adZ[i] = -adY[i] * exp((1.0-dAlpha)*dF) + exp((2.0-dAlpha)*dF);
+        }
+    }
     
 Cleanup:
     return hr;
@@ -49,7 +58,7 @@ Error:
 
 
 
-
+// compute likelihood function
 double CDispexpo::Deviance
 (
     double *adY,
