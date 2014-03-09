@@ -294,29 +294,16 @@ double CDispexpo::BagImprovement
 	double dW = 0.0;
     unsigned long i = 0;
     double dF = 0.0;
+	double ddF = 0.0;
 
     for(i=0; i<nTrain; i++)
     {
         if(!afInBag[i])
         {
 			dF = adF[i] + ((adOffset==NULL) ? 0.0 : adOffset[i]);
-			if(adY[i] > dF)
-            {
-                dL += adWeight[i]*dAlpha*(adY[i]-dF)*(adY[i]-dF);
-            }
-            else
-            {
-                dL += adWeight[i]*(1.0-dAlpha)*(adY[i]-dF)*(adY[i]-dF);
-            }
-			
-			if(adY[i] > (dF+dStepSize*adFadj[i]))
-			{
-                dLadj += adWeight[i]*dAlpha*(adY[i]-dF-dStepSize*adFadj[i])*(adY[i]-dF-dStepSize*adFadj[i]);
-            }
-            else
-            {
-                dLadj += adWeight[i]*(1.0-dAlpha)*(adY[i]-dF-dStepSize*adFadj[i])*(adY[i]-dF-dStepSize*adFadj[i]);
-            }
+			ddF = dF + dStepSize*adFadj[i];
+         	dL += adWeight[i] * (adY[i] * exp((1-dAlpha) * dF) / (dAlpha - 1) + exp((2-dAlpha)* dF) / (2 - dAlpha));
+         	dLadj += adWeight[i] * (adY[i] * exp((1-dAlpha) * ddF) / (dAlpha - 1) + exp((2-dAlpha)* ddF) / (2 - dAlpha));    
             dW += adWeight[i];
         }
     }
