@@ -99,7 +99,7 @@ double CDispexpo::Deviance
 
 
 
-
+// compute Initial value
 NPtweedieRESULT CDispexpo::InitF
 (
     double *adY,
@@ -126,8 +126,8 @@ NPtweedieRESULT CDispexpo::InitF
             for(i=0; i<cLength; i++)
             {
 				dTemp = dInitF + ((adOffset==NULL) ? 0.0 : adOffset[i]);
-                dNum += adWeight[i]*(-adY[i] * exp((1.0-dAlpha) * dTemp) + exp((2.0-dAlpha)*dTemp));
-                dDen += adWeight[i]*(-adY[i] * (1.0-dAlpha) * exp((1.0-dAlpha) * dTemp) + (2.0-dAlpha) * exp((2.0-dAlpha)*dTemp));
+                dNum += adWeight[i]*(-adY[i] * exp((1.0-dAlpha)*dTemp) + exp((2.0-dAlpha)*dTemp));
+                dDen += adWeight[i]*(-adY[i] * (1.0-dAlpha) * exp((1.0-dAlpha)*dTemp) + (2.0-dAlpha) * exp((2.0-dAlpha)*dTemp));
             }
             dNewtonStep = -dNum/dDen;
             dInitF += dNewtonStep;
@@ -162,87 +162,50 @@ NPtweedieRESULT CDispexpo::FitBestConstant
 
     NPtweedieRESULT hr = NPtweedie_OK;
     
+    double dF = 0.0;
     unsigned long iObs = 0;
     unsigned long iNode = 0;
-    vector<vector<double> > vecadDiff;	
-    vecadDiff.resize(cTermNodes);
-	double dOffset;
+    vector<vector<double> > vecdNum;	
+    vector<vector<double> > vecdDen;	
+    vecdNum.resize(cTermNodes);
+    vecdNum.assign(vecdNum.size(),0.0);
+    vecdDen.resize(cTermNodes);
+    vecdDen.assign(vecdDen.size(),0.0);
 
-    for(iObs=0; iObs<nTrain; iObs++)
+	for(iObs=0; iObs<nTrain; iObs++)
+	{
+		if(afInBag[iObs])
+		{
+			dF = adF[iObs] + ((adOffset==NULL) ? 0.0 : adOffset[iObs]);
+           	vecdNum[aiNodeAssign[iObs]] += 
+				adW[iObs]*(-adY[iObs] * exp((1.0-dAlpha)*dF[iObs]) + 
+				exp((2.0-dAlpha)*dF[iObs]));
+           	vecdDen[aiNodeAssign[iObs]] += 
+				adW[iObs]*(-adY[iObs] * (1.0-dAlpha) * exp((1.0-dAlpha)*dF[iObs]) + 
+				(2.0-dAlpha) * exp((2.0-dAlpha)*dF[iObs]));
+       	}
+	}
+
+	for(iNode=0; iNode<cTermNodes; iNode++)
     {
-            if(afInBag[iObs])
-            {
-					dOffset = (adOffset==NULL) ? 0.0 : adOffset[iObs];
-                    vecadDiff[aiNodeAssign[iObs]].push_back(adY[iObs]-dOffset-adF[iObs]) ;            
-            }
-    }
-    
-    
-    for(iNode=0; iNode<cTermNodes; iNode++)
-    {
-        if(vecadDiff[iNode].size()!=0)
+        if(vecpTermNodes[iNode]!=NULL)
         {
-                sort(vecadDiff[iNode].begin(),vecadDiff[iNode].end());
-                double Deviance;
-                double test;
-                unsigned long Len = vecadDiff[iNode].size();
-                unsigned long begin=0;
-                unsigned long end=Len-1;
-
-                     while (end>begin+1) 
-                     {
-                             Deviance=0;
-                             test=floor(double(begin+end)/2.0);
-                             for (unsigned long j=0; j<test; j++)
-                             {
-                                     Deviance += (1.0-dAlpha)*(vecadDiff[iNode][j]-vecadDiff[iNode][test]);
-                             }
-
-                             for (unsigned long j=Len-1;j>test;j--) 
-                             {
-                                     Deviance += dAlpha*(vecadDiff[iNode][j]-vecadDiff[iNode][test]);
-                             }
-
-                             if(Deviance>0) 
-                             {
-                                     begin=test;
-                             }
-
-                             else
-                             {
-                                     end=test;
-                             }
-                     }
-
-                     double Pnum=0;
-                     for (unsigned long j=0;j<(begin+1);j++) 
-                     {
-                             Pnum += (1.0-dAlpha)*(vecadDiff[iNode][j]);
-                     }
-
-                     for (unsigned long j=Len-1;j>(end-1);j--) 
-                     {
-                             Pnum += dAlpha*(vecadDiff[iNode][j]);
-                     }
-
-                     if (((1.0-dAlpha)*end + dAlpha*(Len-end))==0)
-                     {
-                             Pnum=0.0;  
-                     }
-                     else
-                     {
-                             Pnum=Pnum / ((1.0-dAlpha)*end + dAlpha*(Len-end));
-                     }       	
-
-                vecpTermNodes[iNode] ->dPrediction = Pnum;
-                        
-         }
-    }	
+			if(vecdDen[iNode] == 0)
+            {
+                vecpTermNodes[iNode]->dPrediction = 0.0;
+            }
+            else
+            {
+                vecpTermNodes[iNode]->dPrediction -= 
+					vecdNum[iNode]/vecdDen[iNode]);
+			}
+        }
+    }
 
     return hr;
 }
 
-
+// compute likelihood improvement after updates
 double CDispexpo::BagImprovement
 (
     double *adY,
