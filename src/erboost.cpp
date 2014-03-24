@@ -5,9 +5,9 @@
 //------------------------------------------------------------------------------
 //  by Greg Ridgeway  Copyright (C) 2003
 #include<vector>
-#include "NPtweedie.h"
+#include "erboost.h"
 
-unsigned long NPtweedie_setup
+unsigned long erboost_setup
 (
     double *adY,
     double *adOffset,
@@ -34,19 +34,19 @@ unsigned long NPtweedie_setup
 
     hr = pData->SetData(adX,aiXOrder,adY,adOffset,adWeight,adMisc,
                         cRows,cCols,acVarClasses,alMonotoneVar);
-    if(NPtweedie_FAILED(hr))
+    if(erboost_FAILED(hr))
     {
         goto Error;
     }
 
     // set the distribution
 
-    if(strncmp(pszFamily,"dispexpo",2) == 0)
+    if(strncmp(pszFamily,"expectile",2) == 0)
     {
-        pDist = new CDispexpo(adMisc[0]);
+        pDist = new CExpectile(adMisc[0]);
         if(pDist==NULL)
         {
-            hr = NPtweedie_OUTOFMEMORY;
+            hr = erboost_OUTOFMEMORY;
             goto Error;
         }
     }
@@ -56,7 +56,7 @@ unsigned long NPtweedie_setup
 
     if(pDist==NULL)
     {
-        hr = NPtweedie_INVALIDARG;
+        hr = erboost_INVALIDARG;
         goto Error;
     }
 
@@ -68,9 +68,9 @@ Error:
 
 
 
-NPtweedieRESULT NPtweedie_transfer_to_R
+erboostRESULT erboost_transfer_to_R
 (
-    CNPtweedie *pNPtweedie,
+    Cerboost *perboost,
     VEC_VEC_CATEGORIES &vecSplitCodes,
     int *aiSplitVar,
     double *adSplitPoint,
@@ -83,9 +83,9 @@ NPtweedieRESULT NPtweedie_transfer_to_R
     int cCatSplitsOld
 )
 {
-    NPtweedieRESULT hr = NPtweedie_OK;
+    erboostRESULT hr = erboost_OK;
 
-    hr = pNPtweedie->TransferTreeToRList(aiSplitVar,
+    hr = perboost->TransferTreeToRList(aiSplitVar,
                                    adSplitPoint,
                                    aiLeftNode,
                                    aiRightNode,
@@ -95,7 +95,7 @@ NPtweedieRESULT NPtweedie_transfer_to_R
                                    adPred,
                                    vecSplitCodes,
                                    cCatSplitsOld);
-    if(NPtweedie_FAILED(hr)) goto Error;
+    if(erboost_FAILED(hr)) goto Error;
 
 Cleanup:
     return hr;
@@ -104,7 +104,7 @@ Error:
 }
 
 
-NPtweedieRESULT NPtweedie_transfer_catsplits_to_R
+erboostRESULT erboost_transfer_catsplits_to_R
 (
     int iCatSplit,
     VEC_VEC_CATEGORIES &vecSplitCodes,
@@ -118,7 +118,7 @@ NPtweedieRESULT NPtweedie_transfer_catsplits_to_R
         aiSplitCodes[i] = vecSplitCodes[iCatSplit][i];
     }
 
-    return NPtweedie_OK;
+    return erboost_OK;
 }
 
 

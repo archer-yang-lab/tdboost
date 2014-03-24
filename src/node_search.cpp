@@ -64,47 +64,47 @@ CNodeSearch::~CNodeSearch()
 }
 
 
-NPtweedieRESULT CNodeSearch::Initialize
+erboostRESULT CNodeSearch::Initialize
 (
     unsigned long cMinObsInNode
 )
 {
-    NPtweedieRESULT hr = NPtweedie_OK;
+    erboostRESULT hr = erboost_OK;
 
     adGroupSumZ = new double[k_cMaxClasses];
     if(adGroupSumZ == NULL)
     {
-        hr = NPtweedie_OUTOFMEMORY;
+        hr = erboost_OUTOFMEMORY;
         goto Error;
     }
     adGroupW = new double[k_cMaxClasses];
     if(adGroupW == NULL)
     {
-        hr = NPtweedie_OUTOFMEMORY;
+        hr = erboost_OUTOFMEMORY;
         goto Error;
     }
     acGroupN = new ULONG[k_cMaxClasses];
     if(acGroupN == NULL)
     {
-        hr = NPtweedie_OUTOFMEMORY;
+        hr = erboost_OUTOFMEMORY;
         goto Error;
     }
     adGroupMean = new double[k_cMaxClasses];
     if(adGroupMean == NULL)
     {
-        hr = NPtweedie_OUTOFMEMORY;
+        hr = erboost_OUTOFMEMORY;
         goto Error;
     }
     aiCurrentCategory = new int[k_cMaxClasses];
     if(aiCurrentCategory == NULL)
     {
-        hr = NPtweedie_OUTOFMEMORY;
+        hr = erboost_OUTOFMEMORY;
         goto Error;
     }
     aiBestCategory = new ULONG[k_cMaxClasses];
     if(aiBestCategory == NULL)
     {
-        hr = NPtweedie_OUTOFMEMORY;
+        hr = erboost_OUTOFMEMORY;
         goto Error;
     }
 
@@ -117,7 +117,7 @@ Error:
 }
 
 
-NPtweedieRESULT CNodeSearch::IncorporateObs
+erboostRESULT CNodeSearch::IncorporateObs
 (
     double dX,
     double dZ,
@@ -125,7 +125,7 @@ NPtweedieRESULT CNodeSearch::IncorporateObs
     long lMonotone
 )
 {
-    NPtweedieRESULT hr = NPtweedie_OK;
+    erboostRESULT hr = erboost_OK;
     static double dWZ = 0.0;
 
     if(fIsSplit) goto Cleanup;
@@ -145,8 +145,8 @@ NPtweedieRESULT CNodeSearch::IncorporateObs
     {
         if(dLastXValue > dX)
         {
-            error("Observations are not in order. NPtweedie() was unable to build an index for the design matrix. Could be a bug in NPtweedie or an unusual data type in data.\n");
-            hr = NPtweedie_FAIL;
+            error("Observations are not in order. erboost() was unable to build an index for the design matrix. Could be a bug in erboost or an unusual data type in data.\n");
+            hr = erboost_FAIL;
             goto Error;
         }
 
@@ -207,7 +207,7 @@ Error:
 
 
 
-NPtweedieRESULT CNodeSearch::Set
+erboostRESULT CNodeSearch::Set
 (
     double dSumZ,
     double dTotalW,
@@ -217,7 +217,7 @@ NPtweedieRESULT CNodeSearch::Set
     CNodeFactory *pNodeFactory
 )
 {
-    NPtweedieRESULT hr = NPtweedie_OK;
+    erboostRESULT hr = erboost_OK;
 
     dInitSumZ = dSumZ;
     dInitTotalW = dTotalW;
@@ -261,13 +261,13 @@ NPtweedieRESULT CNodeSearch::Set
 }
 
 
-NPtweedieRESULT CNodeSearch::ResetForNewVar
+erboostRESULT CNodeSearch::ResetForNewVar
 (
     unsigned long iWhichVar,
     long cCurrentVarClasses
 )
 {
-    NPtweedieRESULT hr = NPtweedie_OK;
+    erboostRESULT hr = erboost_OK;
     long i=0;
 
     if(fIsSplit) goto Cleanup;
@@ -302,9 +302,9 @@ Cleanup:
 
 
 
-NPtweedieRESULT CNodeSearch::WrapUpCurrentVariable()
+erboostRESULT CNodeSearch::WrapUpCurrentVariable()
 {
-    NPtweedieRESULT hr = NPtweedie_OK;
+    erboostRESULT hr = erboost_OK;
     if(iCurrentSplitVar == iBestSplitVar)
     {
         if(cCurrentMissingN > 0)
@@ -326,9 +326,9 @@ NPtweedieRESULT CNodeSearch::WrapUpCurrentVariable()
 
 
 
-NPtweedieRESULT CNodeSearch::EvaluateCategoricalSplit()
+erboostRESULT CNodeSearch::EvaluateCategoricalSplit()
 {
-    NPtweedieRESULT hr = NPtweedie_OK;
+    erboostRESULT hr = erboost_OK;
     long i=0;
     long j=0;
     unsigned long cFiniteMeans = 0;
@@ -337,7 +337,7 @@ NPtweedieRESULT CNodeSearch::EvaluateCategoricalSplit()
 
     if(cCurrentVarClasses == 0)
     {
-        hr = NPtweedie_INVALIDARG;
+        hr = erboost_INVALIDARG;
         goto Error;
     }
 
@@ -410,7 +410,7 @@ Error:
 
 
 
-NPtweedieRESULT CNodeSearch::SetupNewNodes
+erboostRESULT CNodeSearch::SetupNewNodes
 (
     PCNodeNonterminal &pNewSplitNode,
     PCNodeTerminal &pNewLeftNode,
@@ -418,7 +418,7 @@ NPtweedieRESULT CNodeSearch::SetupNewNodes
     PCNodeTerminal &pNewMissingNode
 )
 {
-    NPtweedieRESULT hr = NPtweedie_OK;
+    erboostRESULT hr = erboost_OK;
     CNodeContinuous *pNewNodeContinuous = NULL;
     CNodeCategorical *pNewNodeCategorical = NULL;
     unsigned long i=0;

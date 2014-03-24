@@ -6,16 +6,16 @@
 #include <algorithm>
 #include "distribution.h"
 
-class CDispexpo: public CDistribution
+class CExpectile: public CDistribution
 {
 
 public:
 
-    CDispexpo(double dAlpha);
+    CExpectile(double dAlpha);
 
-    virtual ~CDispexpo();
+    virtual ~CExpectile();
 
-    NPtweedieRESULT ComputeWorkingResponse(double *adY,
+    erboostRESULT ComputeWorkingResponse(double *adY,
                                    double *adMisc,
                                    double *adOffset,
                                    double *adF, 
@@ -24,14 +24,14 @@ public:
                                    bool *afInBag,
                                    unsigned long nTrain);
 
-    NPtweedieRESULT InitF(double *adY, 
+    erboostRESULT InitF(double *adY, 
                     double *adMisc,
                     double *adOffset,
                     double *adWeight,
                     double &dInitF, 
                     unsigned long cLength);
 
-    NPtweedieRESULT FitBestConstant(double *adY,
+    erboostRESULT FitBestConstant(double *adY,
                               double *adMisc,
                               double *adOffset,
                               double *adW,

@@ -28,35 +28,35 @@ public:
 
     CNodeSearch();
     ~CNodeSearch();
-    NPtweedieRESULT Initialize(unsigned long cMinObsInNode);
+    erboostRESULT Initialize(unsigned long cMinObsInNode);
 
-    NPtweedieRESULT IncorporateObs(double dX,
+    erboostRESULT IncorporateObs(double dX,
                              double dZ,
                              double dW,
                              long lMonotone);
 
-    NPtweedieRESULT Set(double dSumZ,
+    erboostRESULT Set(double dSumZ,
                 double dTotalW,
                 unsigned long cTotalN,
                 CNodeTerminal *pThisNode,
                 CNode **ppParentPointerToThisNode,
                 CNodeFactory *pNodeFactory);
-    NPtweedieRESULT ResetForNewVar(unsigned long iWhichVar,
+    erboostRESULT ResetForNewVar(unsigned long iWhichVar,
                            long cVarClasses);
 
     double BestImprovement() { return dBestImprovement; }
-    NPtweedieRESULT SetToSplit() 
+    erboostRESULT SetToSplit() 
     {    
         fIsSplit = true;
-        return NPtweedie_OK;
+        return erboost_OK;
     };
-    NPtweedieRESULT SetupNewNodes(PCNodeNonterminal &pNewSplitNode,
+    erboostRESULT SetupNewNodes(PCNodeNonterminal &pNewSplitNode,
                           PCNodeTerminal &pNewLeftNode,
                           PCNodeTerminal &pNewRightNode,
                           PCNodeTerminal &pNewMissingNode);
 
-    NPtweedieRESULT EvaluateCategoricalSplit();
-    NPtweedieRESULT WrapUpCurrentVariable();
+    erboostRESULT EvaluateCategoricalSplit();
+    erboostRESULT WrapUpCurrentVariable();
     double ThisNodePrediction() {return pThisNode->dPrediction;}
     bool operator<(const CNodeSearch &ns) {return dBestImprovement<ns.dBestImprovement;}
 

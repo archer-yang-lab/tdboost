@@ -4,9 +4,9 @@
 // age vignette. http://cran.r-project.org/web/packages/gbm.
 //------------------------------------------------------------------------------
 //  by Greg Ridgeway  Copyright (C) 2003
-#include "NPtweedie_engine.h"
+#include "erboost_engine.h"
 
-CNPtweedie::CNPtweedie()
+Cerboost::Cerboost()
 {
     adFadj = NULL;
     adZ = NULL;
@@ -30,7 +30,7 @@ CNPtweedie::CNPtweedie()
 }
 
 
-CNPtweedie::~CNPtweedie()
+Cerboost::~Cerboost()
 {
     if(adFadj != NULL)
     {
@@ -71,7 +71,7 @@ CNPtweedie::~CNPtweedie()
 }
 
 
-NPtweedieRESULT CNPtweedie::Initialize
+erboostRESULT Cerboost::Initialize
 (
     CDataset *pData,
     CDistribution *pDist,
@@ -82,17 +82,17 @@ NPtweedieRESULT CNPtweedie::Initialize
     unsigned long cMinObsInNode
 )
 {
-    NPtweedieRESULT hr = NPtweedie_OK;
+    erboostRESULT hr = erboost_OK;
     unsigned long i=0;
 
     if(pData == NULL)
     {
-        hr = NPtweedie_INVALIDARG;
+        hr = erboost_INVALIDARG;
         goto Error;
     }
     if(pDist == NULL)
     {
-        hr = NPtweedie_INVALIDARG;
+        hr = erboost_INVALIDARG;
         goto Error;
     }
 
@@ -108,7 +108,7 @@ NPtweedieRESULT CNPtweedie::Initialize
     ptreeTemp = new CCARTTree;
     if(ptreeTemp == NULL)
     {
-        hr = NPtweedie_OUTOFMEMORY;
+        hr = erboost_OUTOFMEMORY;
         goto Error;
     }
 
@@ -118,24 +118,24 @@ NPtweedieRESULT CNPtweedie::Initialize
     adZ = new double[cTrain];
     if(adZ == NULL)
     {
-        hr = NPtweedie_OUTOFMEMORY;
+        hr = erboost_OUTOFMEMORY;
         goto Error;
     }
     adFadj = new double[pData->cRows];
     if(adFadj == NULL)
     {
-        hr = NPtweedie_OUTOFMEMORY;
+        hr = erboost_OUTOFMEMORY;
         goto Error;
     }
 
     pNodeFactory = new CNodeFactory();
     if(pNodeFactory == NULL)
     {
-        hr = NPtweedie_OUTOFMEMORY;
+        hr = erboost_OUTOFMEMORY;
         goto Error;
     }
     hr = pNodeFactory->Initialize(cDepth);
-    if(NPtweedie_FAILED(hr))
+    if(erboost_FAILED(hr))
     {
         goto Error;
     }
@@ -145,21 +145,21 @@ NPtweedieRESULT CNPtweedie::Initialize
     afInBag = new bool[cTrain];
     if(afInBag==NULL)
     {
-        hr = NPtweedie_OUTOFMEMORY;
+        hr = erboost_OUTOFMEMORY;
         goto Error;
     }
     // aiNodeAssign tracks to which node each training obs belongs
     aiNodeAssign = new ULONG[cTrain];
     if(aiNodeAssign==NULL)
     {
-        hr = NPtweedie_OUTOFMEMORY;
+        hr = erboost_OUTOFMEMORY;
         goto Error;
     }
     // NodeSearch objects help decide which nodes to split
     aNodeSearch = new CNodeSearch[2*cDepth+1];
     if(aNodeSearch==NULL)
     {
-        hr = NPtweedie_OUTOFMEMORY;
+        hr = erboost_OUTOFMEMORY;
         goto Error;
     }
     for(i=0; i<2*cDepth+1; i++)
@@ -179,7 +179,7 @@ Error:
 
 
 
-NPtweedieRESULT CNPtweedie::Predict
+erboostRESULT Cerboost::Predict
 (
     unsigned long iVar,
     unsigned long cTrees,
@@ -188,14 +188,14 @@ NPtweedieRESULT CNPtweedie::Predict
     unsigned long cLength
 )
 {
-    NPtweedieRESULT hr = NPtweedie_OK;
+    erboostRESULT hr = erboost_OK;
 
 
     return hr;
 }
 
 
-NPtweedieRESULT CNPtweedie::Predict
+erboostRESULT Cerboost::Predict
 (
     double *adX,
     unsigned long cRow,
@@ -204,7 +204,7 @@ NPtweedieRESULT CNPtweedie::Predict
     double *adF
 )
 {
-    NPtweedieRESULT hr = NPtweedie_OK;
+    erboostRESULT hr = erboost_OK;
 
 
     return hr;
@@ -212,13 +212,13 @@ NPtweedieRESULT CNPtweedie::Predict
 
 
 
-NPtweedieRESULT CNPtweedie::GetVarRelativeInfluence
+erboostRESULT Cerboost::GetVarRelativeInfluence
 (
     double *adRelInf,
     unsigned long cTrees
 )
 {
-    NPtweedieRESULT hr = NPtweedie_OK;
+    erboostRESULT hr = erboost_OK;
     int iVar=0;
 
     for(iVar=0; iVar<pData->cCols; iVar++)
@@ -230,12 +230,12 @@ NPtweedieRESULT CNPtweedie::GetVarRelativeInfluence
 }
 
 
-NPtweedieRESULT CNPtweedie::PrintTree()
+erboostRESULT Cerboost::PrintTree()
 {
-    NPtweedieRESULT hr = NPtweedie_OK;
+    erboostRESULT hr = erboost_OK;
 
     hr = ptreeTemp->Print();
-    if(NPtweedie_FAILED(hr)) goto Error;
+    if(erboost_FAILED(hr)) goto Error;
 
 Cleanup:
     return hr;
@@ -246,7 +246,7 @@ Error:
 
 
 
-NPtweedieRESULT CNPtweedie::iterate
+erboostRESULT Cerboost::iterate
 (
     double *adF,
     double &dTrainError,
@@ -255,13 +255,13 @@ NPtweedieRESULT CNPtweedie::iterate
     int &cNodes
 )
 {
-    NPtweedieRESULT hr = NPtweedie_OK;
+    erboostRESULT hr = erboost_OK;
     unsigned long i = 0;
     unsigned long cBagged = 0;
 
     if(!fInitialized)
     {
-        hr = NPtweedie_FAIL;
+        hr = erboost_FAIL;
         goto Error;
     }
 
@@ -297,7 +297,7 @@ NPtweedieRESULT CNPtweedie::iterate
                                        pData->adWeight,
                                        afInBag,
                                        cTrain);
-    if(NPtweedie_FAILED(hr))
+    if(erboost_FAILED(hr))
     {
         goto Error;
     }
@@ -314,7 +314,7 @@ NPtweedieRESULT CNPtweedie::iterate
                          cMinObsInNode,
                          afInBag,
                          aiNodeAssign,aNodeSearch,vecpTermNodes);
-    if(NPtweedie_FAILED(hr))
+    if(erboost_FAILED(hr))
     {
         goto Error;
     }
@@ -323,7 +323,7 @@ NPtweedieRESULT CNPtweedie::iterate
     Rprintf("get node count\n");
     #endif
     hr = ptreeTemp->GetNodeCount(cNodes);
-    if(NPtweedie_FAILED(hr))
+    if(erboost_FAILED(hr))
     {
         goto Error;
     }
@@ -346,7 +346,7 @@ NPtweedieRESULT CNPtweedie::iterate
                                 cMinObsInNode,
                                 afInBag,
                                 adFadj);
-    if(NPtweedie_FAILED(hr))
+    if(erboost_FAILED(hr))
     {
         goto Error;
     }
@@ -355,7 +355,7 @@ NPtweedieRESULT CNPtweedie::iterate
     // fill in missing nodes where N < cMinObsInNode
     hr = ptreeTemp->Adjust(aiNodeAssign,adFadj,cTrain,
                            vecpTermNodes,cMinObsInNode);
-    if(NPtweedie_FAILED(hr))
+    if(erboost_FAILED(hr))
     {
         goto Error;
     }
@@ -415,7 +415,7 @@ Error:
 }
 
 
-NPtweedieRESULT CNPtweedie::TransferTreeToRList
+erboostRESULT Cerboost::TransferTreeToRList
 (
     int *aiSplitVar,
     double *adSplitPoint,
@@ -429,7 +429,7 @@ NPtweedieRESULT CNPtweedie::TransferTreeToRList
     int cCatSplitsOld
 )
 {
-    NPtweedieRESULT hr = NPtweedie_OK;
+    erboostRESULT hr = erboost_OK;
 
     hr = ptreeTemp->TransferTreeToRList(pData,
                                         aiSplitVar,

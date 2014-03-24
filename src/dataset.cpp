@@ -29,14 +29,14 @@ CDataset::~CDataset()
 
 
 
-NPtweedieRESULT CDataset::ResetWeights()
+erboostRESULT CDataset::ResetWeights()
 {
-    NPtweedieRESULT hr = NPtweedie_OK;
+    erboostRESULT hr = erboost_OK;
     int i = 0;
 
     if(adWeight == NULL)
     {
-        hr = NPtweedie_INVALIDARG;
+        hr = erboost_INVALIDARG;
         goto Error;
     }
 
@@ -55,7 +55,7 @@ Error:
 
 
 
-NPtweedieRESULT CDataset::SetData
+erboostRESULT CDataset::SetData
 (
     double *adX,
     int *aiXOrder,
@@ -69,11 +69,11 @@ NPtweedieRESULT CDataset::SetData
     int *alMonotoneVar
 )
 {
-    NPtweedieRESULT hr = NPtweedie_OK;
+    erboostRESULT hr = erboost_OK;
 
     if((adX == NULL) || (adY == NULL))
     {
-        hr = NPtweedie_INVALIDARG;
+        hr = erboost_INVALIDARG;
         goto Error;
     }
 

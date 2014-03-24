@@ -27,8 +27,8 @@ public:
     CNodeContinuous();
     ~CNodeContinuous();
 
-    NPtweedieRESULT PrintSubtree(unsigned long cIndent);
-    NPtweedieRESULT TransferTreeToRList(int &iNodeID,
+    erboostRESULT PrintSubtree(unsigned long cIndent);
+    erboostRESULT TransferTreeToRList(int &iNodeID,
                                 CDataset *pData,
                                 int *aiSplitVar,
                                 double *adSplitPoint,
@@ -49,7 +49,7 @@ public:
                           unsigned long cCol,
                           unsigned long iRow);
 
-    NPtweedieRESULT RecycleSelf(CNodeFactory *pNodeFactory);
+    erboostRESULT RecycleSelf(CNodeFactory *pNodeFactory);
 
     double dSplitValue;
 };

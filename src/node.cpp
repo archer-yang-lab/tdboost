@@ -20,56 +20,56 @@ CNode::~CNode()
 }
 
 
-NPtweedieRESULT CNode::Adjust
+erboostRESULT CNode::Adjust
 (
     unsigned long cMinObsInNode
 )
 {
-    NPtweedieRESULT hr = NPtweedie_NOTIMPL;
+    erboostRESULT hr = erboost_NOTIMPL;
     return hr;
 }
 
 
-NPtweedieRESULT CNode::Predict
+erboostRESULT CNode::Predict
 (
     CDataset *pData, 
     unsigned long iRow, 
     double &dFadj
 )
 {
-    NPtweedieRESULT hr = NPtweedie_NOTIMPL;
+    erboostRESULT hr = erboost_NOTIMPL;
     return hr;
 }
 
 
 double CNode::TotalError()
 {
-    NPtweedieRESULT hr = NPtweedie_NOTIMPL;
+    erboostRESULT hr = erboost_NOTIMPL;
     return hr;
 }
 
 
-NPtweedieRESULT CNode::PrintSubtree
+erboostRESULT CNode::PrintSubtree
 (
     unsigned long cIndent
 )
 {
-    NPtweedieRESULT hr = NPtweedie_NOTIMPL;
+    erboostRESULT hr = erboost_NOTIMPL;
     return hr;
 }
 
 
-NPtweedieRESULT CNode::GetVarRelativeInfluence
+erboostRESULT CNode::GetVarRelativeInfluence
 (
     double *adRelInf
 )
 {
-    NPtweedieRESULT hr = NPtweedie_NOTIMPL;
+    erboostRESULT hr = erboost_NOTIMPL;
     return hr;
 }
 
 
-NPtweedieRESULT CNode::TransferTreeToRList
+erboostRESULT CNode::TransferTreeToRList
 (
     int &iNodeID,
     CDataset *pData,
@@ -86,7 +86,7 @@ NPtweedieRESULT CNode::TransferTreeToRList
     double dShrinkage
 )
 {
-    return NPtweedie_NOTIMPL;
+    return erboost_NOTIMPL;
 }
 
 

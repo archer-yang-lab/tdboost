@@ -4,14 +4,14 @@
 // age vignette. http://cran.r-project.org/web/packages/gbm.
 //------------------------------------------------------------------------------
 //  by Greg Ridgeway  Copyright (C) 2003
-#include "NPtweedie.h"
+#include "erboost.h"
 
 extern "C" {
 
 #include <R.h>
 #include <Rinternals.h>
 
-SEXP NPtweedie
+SEXP erboost
 (
     SEXP radY,       // outcome or response
     SEXP radOffset,  // offset for f(x), NA for no offset
@@ -77,7 +77,7 @@ SEXP NPtweedie
     double dValidError = 0.0;
     double dOOBagImprove = 0.0;
 
-    CNPtweedie *pNPtweedie = NULL;
+    Cerboost *perboost = NULL;
     CDataset *pData = NULL;
     CDistribution *pDist = NULL;
 
@@ -85,7 +85,7 @@ SEXP NPtweedie
     pData = new CDataset();
     if(pData==NULL)
     {
-        hr = NPtweedie_OUTOFMEMORY;
+        hr = erboost_OUTOFMEMORY;
         goto Error;
     }
 
@@ -93,7 +93,7 @@ SEXP NPtweedie
     GetRNGstate();
 
     // initialize some things
-    hr = NPtweedie_setup(REAL(radY),
+    hr = erboost_setup(REAL(radY),
                    REAL(radOffset),
                    REAL(radX),
                    INTEGER(raiXOrder),
@@ -112,28 +112,28 @@ SEXP NPtweedie
                    INTEGER(rcTrain)[0],
                    pData,
                    pDist);
-    if(NPtweedie_FAILED(hr))
+    if(erboost_FAILED(hr))
     {
         goto Error;
     }
         
-    // allocate the NPtweedie
-    pNPtweedie = new CNPtweedie();
-    if(pNPtweedie==NULL)
+    // allocate the erboost
+    perboost = new Cerboost();
+    if(perboost==NULL)
     {
-        hr = NPtweedie_OUTOFMEMORY;
+        hr = erboost_OUTOFMEMORY;
         goto Error;
     }
 
-    // initialize the NPtweedie
-    hr = pNPtweedie->Initialize(pData,
+    // initialize the erboost
+    hr = perboost->Initialize(pData,
                           pDist,
                           REAL(rdShrinkage)[0], 
                           cTrain, 
                           REAL(rdBagFraction)[0],
                           INTEGER(rcDepth)[0],
                           INTEGER(rcMinObsInNode)[0]);
-    if(NPtweedie_FAILED(hr))
+    if(erboost_FAILED(hr))
     {
         goto Error;
     }
@@ -193,10 +193,10 @@ SEXP NPtweedie
     }
     for(iT=0; iT<cTrees; iT++)
     {
-        hr = pNPtweedie->iterate(REAL(radF),
+        hr = perboost->iterate(REAL(radF),
                            dTrainError,dValidError,dOOBagImprove,
                            cNodes);
-        if(NPtweedie_FAILED(hr))
+        if(erboost_FAILED(hr))
         {
             goto Error;
         }
@@ -229,7 +229,7 @@ SEXP NPtweedie
         SET_VECTOR_ELT(rSetOfTrees,iT,rNewTree);
         UNPROTECT(1); // rNewTree
 
-        hr = NPtweedie_transfer_to_R(pNPtweedie,
+        hr = erboost_transfer_to_R(perboost,
                                vecSplitCodes,
                                INTEGER(riSplitVar),
                                REAL(rdSplitPoint),
@@ -272,7 +272,7 @@ SEXP NPtweedie
         SET_VECTOR_ELT(rSetSplitCodes,i,rSplitCode);
         UNPROTECT(1); // rSplitCode
 
-        hr = NPtweedie_transfer_catsplits_to_R(i,
+        hr = erboost_transfer_catsplits_to_R(i,
                                          vecSplitCodes,
                                          INTEGER(rSplitCode));
     }
@@ -288,10 +288,10 @@ Cleanup:
     Rprintf("destructing\n");
     #endif
 
-    if(pNPtweedie != NULL)
+    if(perboost != NULL)
     {
-        delete pNPtweedie;
-        pNPtweedie = NULL;
+        delete perboost;
+        perboost = NULL;
     }
     if(pDist != NULL)
     {
@@ -310,7 +310,7 @@ Error:
 }
 
 
-SEXP NPtweedie_pred
+SEXP erboost_pred
 (
    SEXP radX,        // the data matrix
    SEXP rcRows,      // number of rows
@@ -348,7 +348,7 @@ SEXP NPtweedie_pred
    PROTECT(radPredF = allocVector(REALSXP, cRows*cPredIterations));
    if(radPredF == NULL)
    {
-      hr = NPtweedie_OUTOFMEMORY;
+      hr = erboost_OUTOFMEMORY;
       goto Error;
    }
 
@@ -386,7 +386,7 @@ SEXP NPtweedie_pred
       while(iTree<cTrees)
       {
          rThisTree     = VECTOR_ELT(rTrees,iTree);
-         // these relate to columns returned by pretty.NPtweedie.tree()
+         // these relate to columns returned by pretty.erboost.tree()
          aiSplitVar    = INTEGER(VECTOR_ELT(rThisTree,0));
          adSplitCode   = REAL   (VECTOR_ELT(rThisTree,1));
          aiLeftNode    = INTEGER(VECTOR_ELT(rThisTree,2));
@@ -450,7 +450,7 @@ Error:
 
 
 
-SEXP NPtweedie_plot
+SEXP erboost_plot
 (
     SEXP radX,        // vector or matrix of points to make predictions
     SEXP rcRows,      // number of rows in X
@@ -493,7 +493,7 @@ SEXP NPtweedie_plot
     PROTECT(radPredF = allocVector(REALSXP, cRows));
     if(radPredF == NULL)
     {
-        hr = NPtweedie_OUTOFMEMORY;
+        hr = erboost_OUTOFMEMORY;
         goto Error;
     }
     for(iObs=0; iObs<cRows; iObs++)
@@ -604,7 +604,7 @@ Cleanup:
     return radPredF;
 Error:
     goto Cleanup;
-} // NPtweedie_plot
+} // erboost_plot
 
 
 
