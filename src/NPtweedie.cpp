@@ -41,9 +41,9 @@ unsigned long NPtweedie_setup
 
     // set the distribution
 
-    if(strncmp(pszFamily,"expectile",2) == 0)
+    if(strncmp(pszFamily,"EDM",2) == 0)
     {
-        pDist = new CExpectile(adMisc[0]);
+        pDist = new CEDM(adMisc[0]);
         if(pDist==NULL)
         {
             hr = NPtweedie_OUTOFMEMORY;

@@ -1,19 +1,19 @@
 
-#ifndef EXPECTILE_H
-#define EXPECTILE_H
+#ifndef EDM_H
+#define EDM_H
 
 #include <math.h>
 #include <algorithm>
 #include "distribution.h"
 
-class CExpectile: public CDistribution
+class CEDM: public CDistribution
 {
 
 public:
 
-    CExpectile(double dAlpha);
+    CEDM(double dAlpha);
 
-    virtual ~CExpectile();
+    virtual ~CEDM();
 
     NPtweedieRESULT ComputeWorkingResponse(double *adY,
                                    double *adMisc,
@@ -67,7 +67,7 @@ private:
     double dAlpha;   
 };
 
-#endif // EXPECTILE_H
+#endif // EDM_H
 
 
 
