@@ -391,7 +391,7 @@ NPtweedie.more <- function(object,
 NPtweedie.fit <- function(x,y,
                     offset = NULL,
                     misc = NULL,
-                    distribution = list(name = "expectile", alpha = 0.5),
+                    distribution = list(name = "EDM", alpha = 1.5),
                     w = NULL,
                     var.monotone = NULL,
                     n.trees = 100,
@@ -504,10 +504,10 @@ NPtweedie.fit <- function(x,y,
    if(is.character(distribution)) distribution <- list(name=distribution)
    if(!("name" %in% names(distribution)))
    {
-      stop("The distribution is missing a 'name' component, for example list(name=\"expectile\")")
+      stop("The distribution is missing a 'name' component, for example list(name=\"EDM\")")
    }
    supported.distributions <-
-      c("expectile")
+      c("EDM")
    # check potential problems with the distributions
    if(!is.element(distribution$name,supported.distributions))
    {
@@ -517,19 +517,15 @@ NPtweedie.fit <- function(x,y,
    {
       stop("The response ",response.name," must be numeric. Factors must be converted to numeric")
    }
-   if(distribution$name == "expectile")
+   if(distribution$name == "EDM")
    {
-      if(length(unique(w)) > 1)
-      {
-         stop("This version of package for the expectile regression lacks a weighted expectile. For now the weights must be constant.")
-      }
       if(is.null(distribution$alpha))
       {
-         stop("For expectile regression, the distribution parameter must be a list with a parameter 'alpha' indicating the expectile, for example list(name=\"expectile\",alpha=0.95).")
+         stop("For Tweedie models, the distribution parameter must be a list with a parameter 'alpha' indicating the index parameter rho, for example list(name=\"EDM\",alpha=1.5).")
       } else
-      if((distribution$alpha<0) || (distribution$alpha>1))
+      if((distribution$alpha<=1) || (distribution$alpha>=2))
       {
-         stop("alpha must be between 0 and 1.")
+         stop("alpha must be in (1,2).")
       }
       Misc <- c(alpha=distribution$alpha)
    }
@@ -610,7 +606,7 @@ NPtweedie.fit <- function(x,y,
 
 
 NPtweedie <- function(formula = formula(data),
-                distribution = list(name = "expectile", alpha = 0.5),
+                distribution = list(name = "EDM", alpha = 1.5),
                 data = list(),
                 weights,
                 var.monotone = NULL,
@@ -751,7 +747,7 @@ NPtweedie.perf <- function(object,
    if(plot.it)
    {
       par(mar=c(5,4,4,4)+.1)
-      ylab <- "Expectile loss"
+      ylab <- "Exponential Dispersion Loss"
       if(object$train.fraction==1)
       {
          ylim <- range(object$train.error)
