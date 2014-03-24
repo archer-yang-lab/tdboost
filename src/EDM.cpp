@@ -78,7 +78,7 @@ double CEDM::Deviance
     {
       	for(i=0; i<cLength; i++)
       	{
-         	dL += adWeight[i] * (-adY[i] * exp((1.0-dAlpha) * adF[i]) / (1.0-dAlpha) + exp((2.0-dAlpha)* adF[i]) / (2.0-dAlpha));
+         	dL += adWeight[i]*(-adY[i] * exp((1.0-dAlpha)*adF[i])/(1.0-dAlpha) + exp((2.0-dAlpha)*adF[i])/(2.0-dAlpha));
          	dW += adWeight[i];
       	}
     }
@@ -87,7 +87,7 @@ double CEDM::Deviance
       	for(i=0; i<cLength; i++)
       	{
          	dF = adF[i] + adOffset[i];
-         	dL += adWeight[i] * (-adY[i] * exp((1.0-dAlpha) * dF) / (1.0-dAlpha) + exp((2.0-dAlpha)* dF) / (2.0-dAlpha));
+         	dL += adWeight[i]*(-adY[i] * exp((1.0-dAlpha)*dF)/(1.0-dAlpha) + exp((2.0-dAlpha)*dF)/(2.0-dAlpha));
          	dW += adWeight[i];
       	}
     }
@@ -110,31 +110,30 @@ NPtweedieRESULT CEDM::InitF
     unsigned long cLength
 )
 {
-	    unsigned long i=0;
-   	    double dTemp = 0.0;
+    double dSum = 0.0;
+    double dDenom = 0.0;
+    unsigned long i = 0;
 
-        // Newton method for solving for F
-        // should take about 3-6 iterations.
-        double dNum=0.0;         // numerator
-        double dDen=0.0;         // denominator
-        double dNewtonStep=1.0;  // change
-        dInitF = 0.0;
-//        while(fabs(dNewtonStep) > 0.0001)
-//        {
-            dNum=0.0;
-            dDen=0.0;
-            for(i=0; i<cLength; i++)
-            {
-				dTemp = dInitF + ((adOffset==NULL) ? 0.0 : adOffset[i]);
-                dNum += adWeight[i]*(-adY[i] * exp((1.0-dAlpha)*dTemp) + exp((2.0-dAlpha)*dTemp));
-                dDen += adWeight[i]*(-adY[i] * (1.0-dAlpha) * exp((1.0-dAlpha)*dTemp) + (2.0-dAlpha) * exp((2.0-dAlpha)*dTemp));
-            }
-            dNewtonStep = -dNum/dDen;
-            dInitF += dNewtonStep;
-//        }
+    if(adOffset == NULL)
+    {
+        for(i=0; i<cLength; i++)
+        {
+            dSum += adWeight[i]*adY[i];
+            dDenom += adWeight[i];
+        }
+    }
+    else
+    {
+        for(i=0; i<cLength; i++)
+        {
+            dSum += adWeight[i] * adY[i] * exp((1-dAlpha) * adOffset[i]);
+            dDenom += adWeight[i] * exp((2-dAlpha) * adOffset[i]);
+        }
+    }
 
-	//	printf("%f\n", dInitF);
-        return NPtweedie_OK;
+    dInitF = log(dSum/dDenom);
+
+	return NPtweedie_OK;
 
 }
 
@@ -162,43 +161,77 @@ NPtweedieRESULT CEDM::FitBestConstant
 {
 
     NPtweedieRESULT hr = NPtweedie_OK;
-    
     double dF = 0.0;
     unsigned long iObs = 0;
     unsigned long iNode = 0;
     vector<double> vecdNum;	
-    vector<double> vecdDen;	
+    vector<double> vecdDen;
+    vector<double> vecdMax;	
+    vector<double> vecdMin;
     vecdNum.resize(cTermNodes);
     vecdNum.assign(vecdNum.size(),0.0);
     vecdDen.resize(cTermNodes);
     vecdDen.assign(vecdDen.size(),0.0);
+    
+    vecdMax.resize(cTermNodes);
+    vecdMax.assign(vecdMax.size(),-HUGE_VAL);
+    vecdMin.resize(cTermNodes);
+    vecdMin.assign(vecdMin.size(),HUGE_VAL);
 
-	for(iObs=0; iObs<nTrain; iObs++)
-	{
-		if(afInBag[iObs])
-		{
-			dF = adF[iObs] + ((adOffset==NULL) ? 0.0 : adOffset[iObs]);
-           	vecdNum[aiNodeAssign[iObs]] += 
-				adW[iObs]*(-adY[iObs] * exp((1.0-dAlpha)*dF) + 
-				exp((2.0-dAlpha)*dF));
-           	vecdDen[aiNodeAssign[iObs]] += 
-				adW[iObs]*(-adY[iObs] * (1.0-dAlpha) * exp((1.0-dAlpha)*dF) + 
-				(2.0-dAlpha) * exp((2.0-dAlpha)*dF));
-       	}
-	}
-
-	for(iNode=0; iNode<cTermNodes; iNode++)
+    if(adOffset == NULL)
+    {
+        for(iObs=0; iObs<nTrain; iObs++)
+        {
+            if(afInBag[iObs])
+            {
+                vecdNum[aiNodeAssign[iObs]] += adW[iObs]*adY[iObs]*exp((1-dAlpha)*adF[iObs]);
+                vecdDen[aiNodeAssign[iObs]] += adW[iObs]*exp((2-dAlpha)*adF[iObs]);
+            }
+            vecdMax[aiNodeAssign[iObs]] = 
+               fmax2(adF[iObs],vecdMax[aiNodeAssign[iObs]]);
+            vecdMin[aiNodeAssign[iObs]] =  
+               fmin2(adF[iObs],vecdMin[aiNodeAssign[iObs]]);
+        }
+    }
+    else
+    {
+        for(iObs=0; iObs<nTrain; iObs++)
+        {
+            if(afInBag[iObs])
+            {
+				dF = adOffset[iObs]+adF[iObs];
+                vecdNum[aiNodeAssign[iObs]] += adW[iObs]*adY[iObs]*exp((1-dAlpha)*dF);
+                vecdDen[aiNodeAssign[iObs]] += adW[iObs]*exp((2-dAlpha)*dF);
+            }
+        }        
+    }
+    for(iNode=0; iNode<cTermNodes; iNode++)
     {
         if(vecpTermNodes[iNode]!=NULL)
         {
-			if(vecdDen[iNode] == 0)
+            if(vecdNum[iNode] == 0.0)
+            {
+                // DEBUG: if vecdNum==0 then prediction = -Inf
+                // Not sure what else to do except plug in an arbitrary
+                //   negative number, -1? -10? Let's use -1, then make
+                //   sure |adF| < 19 always.
+                vecpTermNodes[iNode]->dPrediction = -19.0;
+            }
+            else if(vecdDen[iNode] == 0.0)
             {
                 vecpTermNodes[iNode]->dPrediction = 0.0;
-            }
+            }            
             else
             {
-                vecpTermNodes[iNode]->dPrediction -= vecdNum[iNode]/vecdDen[iNode];
-			}
+                vecpTermNodes[iNode]->dPrediction = 
+                    log(vecdNum[iNode]/vecdDen[iNode]);
+            }
+            vecpTermNodes[iNode]->dPrediction = 
+               fmin2(vecpTermNodes[iNode]->dPrediction,
+                     19-vecdMax[iNode]);
+            vecpTermNodes[iNode]->dPrediction = 
+               fmax2(vecpTermNodes[iNode]->dPrediction,
+                     -19-vecdMin[iNode]);
         }
     }
 

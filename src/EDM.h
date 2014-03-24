@@ -2,6 +2,7 @@
 #ifndef EDM_H
 #define EDM_H
 
+#include <Rmath.h>
 #include <math.h>
 #include <algorithm>
 #include "distribution.h"
