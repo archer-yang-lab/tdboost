@@ -24,12 +24,12 @@ CCARTTree::~CCARTTree()
 }
 
 
-erboostRESULT CCARTTree::Initialize
+NPtweedieRESULT CCARTTree::Initialize
 (
     CNodeFactory *pNodeFactory
 )
 {
-    erboostRESULT hr = erboost_OK;
+    NPtweedieRESULT hr = NPtweedie_OK;
 
     this->pNodeFactory = pNodeFactory;
 
@@ -37,16 +37,16 @@ erboostRESULT CCARTTree::Initialize
 }
 
     
-erboostRESULT CCARTTree::Reset()
+NPtweedieRESULT CCARTTree::Reset()
 {
-    erboostRESULT hr = erboost_OK;
+    NPtweedieRESULT hr = NPtweedie_OK;
 
     if(pRootNode != NULL)
     {
         // delete the old tree and start over
         hr = pRootNode->RecycleSelf(pNodeFactory);
     }
-    if(erboost_FAILED(hr))
+    if(NPtweedie_FAILED(hr))
     {
         goto Error;
     }
@@ -73,7 +73,7 @@ Error:
 //------------------------------------------------------------------------------
 // Grows a regression tree
 //------------------------------------------------------------------------------
-erboostRESULT CCARTTree::grow
+NPtweedieRESULT CCARTTree::grow
 (
     double *adZ, 
     CDataset *pData, 
@@ -90,7 +90,7 @@ erboostRESULT CCARTTree::grow
     VEC_P_NODETERMINAL &vecpTermNodes
 )
 {
-    erboostRESULT hr = erboost_OK;
+    NPtweedieRESULT hr = NPtweedie_OK;
 
     #ifdef NOISY_DEBUG
     Rprintf("Growing tree\n");
@@ -99,7 +99,7 @@ erboostRESULT CCARTTree::grow
     if((adZ==NULL) || (pData==NULL) || (adW==NULL) || (adF==NULL) || 
        (cMaxDepth < 1))
     {
-        hr = erboost_INVALIDARG;
+        hr = NPtweedie_INVALIDARG;
         goto Error;
     }
 
@@ -157,7 +157,7 @@ erboostRESULT CCARTTree::grow
                           adW,
                           iBestNode,
                           dBestNodeImprovement);
-        if(erboost_FAILED(hr))
+        if(NPtweedie_FAILED(hr))
         {
             goto Error;
         }
@@ -232,7 +232,7 @@ Error:
 }
 
 
-erboostRESULT CCARTTree::GetBestSplit
+NPtweedieRESULT CCARTTree::GetBestSplit
 (
     CDataset *pData,
     unsigned long nTrain,
@@ -246,7 +246,7 @@ erboostRESULT CCARTTree::GetBestSplit
     double &dBestNodeImprovement
 )
 {
-    erboostRESULT hr = erboost_OK;
+    NPtweedieRESULT hr = NPtweedie_OK;
 
     int iVar = 0;
     unsigned long iNode = 0;
@@ -277,7 +277,7 @@ erboostRESULT CCARTTree::GetBestSplit
                       adZ[iWhichObs],
                       adW[iWhichObs],
                       pData->alMonotoneVar[iVar]);
-                if(erboost_FAILED(hr))
+                if(NPtweedie_FAILED(hr))
                 {
                     goto Error;
                 }
@@ -313,25 +313,25 @@ Error:
 }
 
 
-erboostRESULT CCARTTree::GetNodeCount
+NPtweedieRESULT CCARTTree::GetNodeCount
 (
     int &cNodes
 )
 {
     cNodes = cTotalNodeCount;
-    return erboost_OK;
+    return NPtweedie_OK;
 }
 
 
 
-erboostRESULT CCARTTree::PredictValid
+NPtweedieRESULT CCARTTree::PredictValid
 (
     CDataset *pData, 
     unsigned long nValid, 
     double *adFadj
 )
 {
-    erboostRESULT hr = erboost_OK;
+    NPtweedieRESULT hr = NPtweedie_OK;
     int i=0;
 
     for(i=pData->cRows - nValid; i<pData->cRows; i++)
@@ -345,7 +345,7 @@ erboostRESULT CCARTTree::PredictValid
 
 
 
-erboostRESULT CCARTTree::Predict
+NPtweedieRESULT CCARTTree::Predict
 (
     double *adX,
     unsigned long cRow, 
@@ -365,12 +365,12 @@ erboostRESULT CCARTTree::Predict
         dFadj = 0.0;
     }
 
-    return erboost_OK;
+    return NPtweedie_OK;
 }
 
 
 
-erboostRESULT CCARTTree::Adjust
+NPtweedieRESULT CCARTTree::Adjust
 (
     unsigned long *aiNodeAssign,
     double *adFadj,
@@ -379,11 +379,11 @@ erboostRESULT CCARTTree::Adjust
     unsigned long cMinObsInNode
 )
 {
-    unsigned long hr = erboost_OK;
+    unsigned long hr = NPtweedie_OK;
     unsigned long iObs = 0;
     
     hr = pRootNode->Adjust(cMinObsInNode);
-    if(erboost_FAILED(hr))
+    if(NPtweedie_FAILED(hr))
     {
         goto Error;
     }
@@ -401,9 +401,9 @@ Error:
 }
 
 
-erboostRESULT CCARTTree::Print()
+NPtweedieRESULT CCARTTree::Print()
 {
-    erboostRESULT hr = erboost_OK;
+    NPtweedieRESULT hr = NPtweedie_OK;
 
     if(pRootNode != NULL)
     {
@@ -417,17 +417,17 @@ erboostRESULT CCARTTree::Print()
 
 
 
-erboostRESULT CCARTTree::GetVarRelativeInfluence
+NPtweedieRESULT CCARTTree::GetVarRelativeInfluence
 (
     double *adRelInf
 )
 {
-    erboostRESULT hr = erboost_OK;
+    NPtweedieRESULT hr = NPtweedie_OK;
 
     if(pRootNode != NULL)
     {
         hr = pRootNode->GetVarRelativeInfluence(adRelInf);
-        if(erboost_FAILED(hr))
+        if(NPtweedie_FAILED(hr))
         {
             goto Error;
         }
@@ -442,7 +442,7 @@ Error:
 
 
 
-erboostRESULT CCARTTree::TransferTreeToRList
+NPtweedieRESULT CCARTTree::TransferTreeToRList
 (
     CDataset *pData,
     int *aiSplitVar,
@@ -458,7 +458,7 @@ erboostRESULT CCARTTree::TransferTreeToRList
     double dShrinkage
 )
 {
-    erboostRESULT hr = erboost_OK;
+    NPtweedieRESULT hr = NPtweedie_OK;
 
     int iNodeID = 0;
 
@@ -480,7 +480,7 @@ erboostRESULT CCARTTree::TransferTreeToRList
     }
     else
     {
-        hr = erboost_FAIL;
+        hr = NPtweedie_FAIL;
     }
     return hr;
 }

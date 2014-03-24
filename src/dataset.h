@@ -25,9 +25,9 @@ public:
 	CDataset();
 	~CDataset();
 
-    erboostRESULT ResetWeights();
+    NPtweedieRESULT ResetWeights();
 
-    erboostRESULT SetData(double *adX,
+    NPtweedieRESULT SetData(double *adX,
                     int *aiXOrder,
                     double *adY,
                     double *adOffset,
@@ -38,15 +38,15 @@ public:
                     int *acVarClasses,
                     int *alMonotoneVar);
 
-    erboostRESULT Entry(int iRow,
+    NPtweedieRESULT Entry(int iRow,
                   int iCol,
                   double &dValue)
     {
-        erboostRESULT hr = erboost_OK;
+        NPtweedieRESULT hr = NPtweedie_OK;
 
         if((iRow >= cRows) || (iCol >= cCols))
         {
-            hr = erboost_INVALIDARG;
+            hr = NPtweedie_INVALIDARG;
             goto Error;
         }
 

@@ -5,11 +5,11 @@
 //------------------------------------------------------------------------------
 //  by Greg Ridgeway  Copyright (C) 2003
 //
-//  File:       erboost.h
+//  File:       NPtweedie.h
 //
 //  License:    GNU GPL (version 2 or later)
 //
-//  Contents:   Entry point for erboost.dll
+//  Contents:   Entry point for NPtweedie.dll
 //            
 //  Owner:      gregr@rand.org
 //
@@ -21,12 +21,12 @@
 #include "dataset.h"
 #include "distribution.h"
 #include "expectile.h"
-#include "erboost_engine.h"
+#include "NPtweedie_engine.h"
 
 typedef vector<char> VEC_CATEGORIES;
 typedef vector<VEC_CATEGORIES> VEC_VEC_CATEGORIES;
 
-erboostRESULT erboost_setup
+NPtweedieRESULT NPtweedie_setup
 (
     double *adY,
     double *adOffset,
@@ -50,9 +50,9 @@ erboostRESULT erboost_setup
 );
 
 
-erboostRESULT erboost_transfer_to_R
+NPtweedieRESULT NPtweedie_transfer_to_R
 (
-    Cerboost *perboost,
+    CNPtweedie *pNPtweedie,
     VEC_VEC_CATEGORIES &vecSplitCodes,
     int *aiSplitVar,
     double *adSplitPoint,
@@ -66,7 +66,7 @@ erboostRESULT erboost_transfer_to_R
 );
 
 
-erboostRESULT erboost_transfer_catsplits_to_R
+NPtweedieRESULT NPtweedie_transfer_catsplits_to_R
 (
     int iCatSplit,
     VEC_VEC_CATEGORIES &vecSplitCodes,

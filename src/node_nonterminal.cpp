@@ -23,12 +23,12 @@ CNodeNonterminal::~CNodeNonterminal()
 
 
 
-erboostRESULT CNodeNonterminal::Adjust
+NPtweedieRESULT CNodeNonterminal::Adjust
 (
     unsigned long cMinObsInNode
 )
 {
-    erboostRESULT hr = erboost_OK;
+    NPtweedieRESULT hr = NPtweedie_OK;
 
     hr = pLeftNode->Adjust(cMinObsInNode);
     hr = pRightNode->Adjust(cMinObsInNode);
@@ -55,14 +55,14 @@ erboostRESULT CNodeNonterminal::Adjust
 
 
 
-erboostRESULT CNodeNonterminal::Predict
+NPtweedieRESULT CNodeNonterminal::Predict
 (
     CDataset *pData, 
     unsigned long iRow, 
     double &dFadj
 )
 {
-    erboostRESULT hr = erboost_OK;
+    NPtweedieRESULT hr = NPtweedie_OK;
 
     signed char schWhichNode = WhichNode(pData,iRow);
     if(schWhichNode == -1)
@@ -82,7 +82,7 @@ erboostRESULT CNodeNonterminal::Predict
 }
 
 
-erboostRESULT CNodeNonterminal::Predict
+NPtweedieRESULT CNodeNonterminal::Predict
 (
     double *adX,
     unsigned long cRow,
@@ -91,7 +91,7 @@ erboostRESULT CNodeNonterminal::Predict
     double &dFadj
 )
 {
-    erboostRESULT hr = erboost_OK;
+    NPtweedieRESULT hr = NPtweedie_OK;
 
     signed char schWhichNode = WhichNode(adX,cRow,cCol,iRow);
     if(schWhichNode == -1)
@@ -111,12 +111,12 @@ erboostRESULT CNodeNonterminal::Predict
 }
 
 
-erboostRESULT CNodeNonterminal::GetVarRelativeInfluence
+NPtweedieRESULT CNodeNonterminal::GetVarRelativeInfluence
 (
     double *adRelInf
 )
 {
-    erboostRESULT hr = erboost_OK;
+    NPtweedieRESULT hr = NPtweedie_OK;
 
     adRelInf[iSplitVar] += dImprovement;
     pLeftNode->GetVarRelativeInfluence(adRelInf);

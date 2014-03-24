@@ -1,8 +1,8 @@
-\name{erboost.object}
-\alias{erboost.object}
+\name{NPtweedie.object}
+\alias{NPtweedie.object}
 \title{ER-Boost Expectile Regression Model Object}
-\description{These are objects representing fitted \code{erboost}s.}
-\section{Structure}{The following components must be included in a legitimate \code{erboost} object.}
+\description{These are objects representing fitted \code{NPtweedie}s.}
+\section{Structure}{The following components must be included in a legitimate \code{NPtweedie} object.}
 \value{
 \item{initF}{the "intercept" term, the initial predicted value to which trees
 make adjustments}
@@ -22,10 +22,10 @@ iteration}
 containing an out-of-bag estimate of the marginal reduction in the expected
 value of the loss function. The out-of-bag estimate uses only the training
 data and is useful for estimating the optimal number of boosting iterations.
-See \code{\link{erboost.perf}}}
+See \code{\link{NPtweedie.perf}}}
 \item{trees}{a list containing the tree structures.}
 \item{c.splits}{a list of all the categorical splits in the collection of
-trees. If the \code{trees[[i]]} component of a \code{erboost} object describes a
+trees. If the \code{trees[[i]]} component of a \code{NPtweedie} object describes a
 categorical split then the splitting value will refer to a component of
 \code{c.splits}. That component of \code{c.splits} will be a vector of length
 equal to the number of levels in the categorical split variable. -1 indicates
@@ -34,7 +34,7 @@ training data}
 }
 \author{Yi Yang \email{yiyang@umn.edu} and Hui Zou \email{hzou@stat.umn.edu}}
 \seealso{
-\code{\link{erboost}}
+\code{\link{NPtweedie}}
 }
 
 \keyword{methods}

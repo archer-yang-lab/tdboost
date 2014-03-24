@@ -15,7 +15,7 @@ public:
 
     virtual ~CExpectile();
 
-    erboostRESULT ComputeWorkingResponse(double *adY,
+    NPtweedieRESULT ComputeWorkingResponse(double *adY,
                                    double *adMisc,
                                    double *adOffset,
                                    double *adF, 
@@ -24,14 +24,14 @@ public:
                                    bool *afInBag,
                                    unsigned long nTrain);
 
-    erboostRESULT InitF(double *adY, 
+    NPtweedieRESULT InitF(double *adY, 
                     double *adMisc,
                     double *adOffset,
                     double *adWeight,
                     double &dInitF, 
                     unsigned long cLength);
 
-    erboostRESULT FitBestConstant(double *adY,
+    NPtweedieRESULT FitBestConstant(double *adY,
                               double *adMisc,
                               double *adOffset,
                               double *adW,

@@ -26,7 +26,7 @@ public:
 
     CNodeNonterminal();
     virtual ~CNodeNonterminal();
-    virtual erboostRESULT Adjust(unsigned long cMinObsInNode);
+    virtual NPtweedieRESULT Adjust(unsigned long cMinObsInNode);
 
     virtual signed char WhichNode(CDataset *pData,
                                   unsigned long iObs) = 0;
@@ -34,7 +34,7 @@ public:
                                   unsigned long cRow,
                                   unsigned long cCol,
                                   unsigned long iRow) = 0;
-    virtual erboostRESULT TransferTreeToRList(int &iNodeID,
+    virtual NPtweedieRESULT TransferTreeToRList(int &iNodeID,
                                         CDataset *pData,
                                         int *aiSplitVar,
                                         double *adSplitPoint,
@@ -48,17 +48,17 @@ public:
                                         int cCatSplitsOld,
                                         double dShrinkage) = 0;
 
-    erboostRESULT Predict(CDataset *pData, 
+    NPtweedieRESULT Predict(CDataset *pData, 
                     unsigned long iRow, 
                     double &dFadj);
-    erboostRESULT Predict(double *adX,
+    NPtweedieRESULT Predict(double *adX,
                     unsigned long cRow,
                     unsigned long cCol,
                     unsigned long iRow,
                     double &dFadj);
 
-    erboostRESULT GetVarRelativeInfluence(double *adRelInf);
-    virtual erboostRESULT RecycleSelf(CNodeFactory *pNodeFactory) = 0;
+    NPtweedieRESULT GetVarRelativeInfluence(double *adRelInf);
+    virtual NPtweedieRESULT RecycleSelf(CNodeFactory *pNodeFactory) = 0;
 
     CNode *pLeftNode;
     CNode *pRightNode;

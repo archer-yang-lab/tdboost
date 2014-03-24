@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //  by Greg Ridgeway  Copyright (C) 2003
 //
-//  File:       erboost_engine.h
+//  File:       NPtweedie_engine.h
 //
 //  License:    GNU GPL (version 2 or later)
 //
@@ -14,8 +14,8 @@
 //
 //------------------------------------------------------------------------------
 
-#ifndef erboost_ENGINerboost_H
-#define erboost_ENGINerboost_H
+#ifndef NPtweedie_ENGINNPtweedie_H
+#define NPtweedie_ENGINNPtweedie_H
 
 #include <vector>
 #include "buildinfo.h"
@@ -26,14 +26,14 @@
 
 using namespace std;
 
-class Cerboost
+class CNPtweedie
 {
 
 public:
 
-    Cerboost();
-    ~Cerboost();
-    erboostRESULT Initialize(CDataset *pData,
+    CNPtweedie();
+    ~CNPtweedie();
+    NPtweedieRESULT Initialize(CDataset *pData,
                          CDistribution *pDist,
                          double dLambda,
                          unsigned long nTrain,
@@ -41,12 +41,12 @@ public:
                          unsigned long cLeaves,
                          unsigned long cMinObsInNode);
 
-    erboostRESULT iterate(double *adF,
+    NPtweedieRESULT iterate(double *adF,
                     double &dTrainError,
                     double &dValidError,
                     double &dOOBagImprove,
                     int &cNodes);
-    erboostRESULT TransferTreeToRList(int *aiSplitVar,
+    NPtweedieRESULT TransferTreeToRList(int *aiSplitVar,
                                 double *adSplitPoint,
                                 int *aiLeftNode,
                                 int *aiRightNode,
@@ -56,24 +56,24 @@ public:
                                 double *adPred,
                                 VEC_VEC_CATEGORIES &vecSplitCodes,
                                 int cCatSplitsOld);
-    erboostRESULT Predict(unsigned long iVar,
+    NPtweedieRESULT Predict(unsigned long iVar,
                     unsigned long cTrees,
                     double *adF,
                     double *adX,
                     unsigned long cLength);
-    erboostRESULT Predict(double *adX,
+    NPtweedieRESULT Predict(double *adX,
                     unsigned long cRow,
                     unsigned long cCol,
                     unsigned long cTrees,
                     double *adF);
 
-    erboostRESULT GetVarRelativeInfluence(double *adRelInf,
+    NPtweedieRESULT GetVarRelativeInfluence(double *adRelInf,
                                     unsigned long cTrees);
-    erboostRESULT PrintTree();
+    NPtweedieRESULT PrintTree();
 
     CDataset *pData;            // the data
     CDistribution *pDist;       // the distribution
-    bool fInitialized;          // indicates whether the erboost has been initialized
+    bool fInitialized;          // indicates whether the NPtweedie has been initialized
     CNodeFactory *pNodeFactory;
 
     // these objects are for the tree growing
@@ -96,7 +96,7 @@ private:
     unsigned long cMinObsInNode;
 };
 
-#endif // erboost_ENGINerboost_H
+#endif // NPtweedie_ENGINNPtweedie_H
 
 
 

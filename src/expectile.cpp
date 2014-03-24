@@ -1,4 +1,4 @@
-//  erboost by Yi Yang and Hui Zou  Copyright (C) 2012
+//  NPtweedie by Yi Yang and Hui Zou  Copyright (C) 2012
 #include "expectile.h"
 
 CExpectile::CExpectile(double dAlpha)
@@ -12,7 +12,7 @@ CExpectile::~CExpectile()
 }
 
 
-erboostRESULT CExpectile::ComputeWorkingResponse
+NPtweedieRESULT CExpectile::ComputeWorkingResponse
 (
     double *adY,
     double *adMisc,
@@ -24,12 +24,12 @@ erboostRESULT CExpectile::ComputeWorkingResponse
     unsigned long nTrain
 )
 {
-	erboostRESULT hr = erboost_OK;
+	NPtweedieRESULT hr = NPtweedie_OK;
     unsigned long i = 0;
     
     if((adY == NULL) || (adF == NULL) || (adZ == NULL) || (adWeight == NULL))
     {
-        hr = erboost_INVALIDARG;
+        hr = NPtweedie_INVALIDARG;
         goto Error;
     }
     
@@ -111,7 +111,7 @@ double CExpectile::Deviance
 
 
 
-erboostRESULT CExpectile::InitF
+NPtweedieRESULT CExpectile::InitF
 (
     double *adY,
     double *adMisc,
@@ -186,7 +186,7 @@ erboostRESULT CExpectile::InitF
 	
         dInitF = Pnum;
    
-        return erboost_OK;
+        return NPtweedie_OK;
 
 }
 
@@ -195,7 +195,7 @@ erboostRESULT CExpectile::InitF
 
 
 
-erboostRESULT CExpectile::FitBestConstant
+NPtweedieRESULT CExpectile::FitBestConstant
 (
     double *adY,
     double *adMisc,
@@ -213,7 +213,7 @@ erboostRESULT CExpectile::FitBestConstant
 )
 {
 
-    erboostRESULT hr = erboost_OK;
+    NPtweedieRESULT hr = NPtweedie_OK;
     
     unsigned long iObs = 0;
     unsigned long iNode = 0;

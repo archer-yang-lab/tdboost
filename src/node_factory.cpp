@@ -19,15 +19,15 @@ CNodeFactory::~CNodeFactory()
 }
 
 
-erboostRESULT CNodeFactory::Initialize
+NPtweedieRESULT CNodeFactory::Initialize
 (
     unsigned long cDepth
 )
 {
-    erboostRESULT hr = erboost_OK;
+    NPtweedieRESULT hr = NPtweedie_OK;
     unsigned long i = 0;
 
-    for(i=0; i<NODEFACTORY_NODerboost_RESERVE; i++)
+    for(i=0; i<NODEFACTORY_NODNPtweedie_RESERVE; i++)
     {
         TerminalStack.push(&(aBlockTerminal[i]));
         ContinuousStack.push(&(aBlockContinuous[i]));
@@ -113,7 +113,7 @@ CNodeCategorical* CNodeFactory::GetNewNodeCategorical()
 }
 
 
-erboostRESULT CNodeFactory::RecycleNode
+NPtweedieRESULT CNodeFactory::RecycleNode
 (
     CNodeTerminal *pNode
 )
@@ -122,10 +122,10 @@ erboostRESULT CNodeFactory::RecycleNode
     {
         TerminalStack.push(pNode);
     }
-    return erboost_OK;
+    return NPtweedie_OK;
 }
 
-erboostRESULT CNodeFactory::RecycleNode
+NPtweedieRESULT CNodeFactory::RecycleNode
 (
     CNodeContinuous *pNode
 )
@@ -137,10 +137,10 @@ erboostRESULT CNodeFactory::RecycleNode
         if(pNode->pMissingNode != NULL) pNode->pMissingNode->RecycleSelf(this);
         ContinuousStack.push(pNode);
     }
-    return erboost_OK;
+    return NPtweedie_OK;
 }
 
-erboostRESULT CNodeFactory::RecycleNode
+NPtweedieRESULT CNodeFactory::RecycleNode
 (
     CNodeCategorical *pNode
 )
@@ -158,7 +158,7 @@ erboostRESULT CNodeFactory::RecycleNode
         CategoricalStack.push(pNode);
     }
 
-    return erboost_OK;
+    return NPtweedie_OK;
 }
 
 

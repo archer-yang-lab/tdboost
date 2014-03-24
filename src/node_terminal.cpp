@@ -20,20 +20,20 @@ CNodeTerminal::~CNodeTerminal()
     #endif
 }
 
-erboostRESULT CNodeTerminal::Adjust
+NPtweedieRESULT CNodeTerminal::Adjust
 (
     unsigned long cMinObsInNode
 )
 {
-    return erboost_OK;
+    return NPtweedie_OK;
 }
 
-erboostRESULT CNodeTerminal::ApplyShrinkage
+NPtweedieRESULT CNodeTerminal::ApplyShrinkage
 (
     double dLambda
 )
 {
-    erboostRESULT hr = erboost_OK;
+    NPtweedieRESULT hr = NPtweedie_OK;
     dPrediction *= dLambda;
 
     return hr;
@@ -41,7 +41,7 @@ erboostRESULT CNodeTerminal::ApplyShrinkage
 
 
 
-erboostRESULT CNodeTerminal::Predict
+NPtweedieRESULT CNodeTerminal::Predict
 (
     CDataset *pData, 
     unsigned long iRow, 
@@ -50,13 +50,13 @@ erboostRESULT CNodeTerminal::Predict
 {
     dFadj = dPrediction;
 
-    return erboost_OK;
+    return NPtweedie_OK;
 }
 
 
 
 
-erboostRESULT CNodeTerminal::Predict
+NPtweedieRESULT CNodeTerminal::Predict
 (
     double *adX,
     unsigned long cRow,
@@ -67,12 +67,12 @@ erboostRESULT CNodeTerminal::Predict
 {
     dFadj = dPrediction;
 
-    return erboost_OK;
+    return NPtweedie_OK;
 }
 
 
 
-erboostRESULT CNodeTerminal::PrintSubtree
+NPtweedieRESULT CNodeTerminal::PrintSubtree
 (
     unsigned long cIndent
 )
@@ -84,31 +84,31 @@ erboostRESULT CNodeTerminal::PrintSubtree
            dTrainW,
            dPrediction);
 
-    return erboost_OK;
+    return NPtweedie_OK;
 }
 
 
-erboostRESULT CNodeTerminal::GetVarRelativeInfluence
+NPtweedieRESULT CNodeTerminal::GetVarRelativeInfluence
 (
     double *adRelInf
 )
 {
-    return erboost_OK;
+    return NPtweedie_OK;
 }
 
 
-erboostRESULT CNodeTerminal::RecycleSelf
+NPtweedieRESULT CNodeTerminal::RecycleSelf
 (
     CNodeFactory *pNodeFactory
 )
 {
     pNodeFactory->RecycleNode(this);
-    return erboost_OK;
+    return NPtweedie_OK;
 };
 
 
 
-erboostRESULT CNodeTerminal::TransferTreeToRList
+NPtweedieRESULT CNodeTerminal::TransferTreeToRList
 (
     int &iNodeID,
     CDataset *pData,
@@ -125,7 +125,7 @@ erboostRESULT CNodeTerminal::TransferTreeToRList
     double dShrinkage
 )
 {
-    erboostRESULT hr = erboost_OK;
+    NPtweedieRESULT hr = NPtweedie_OK;
 
     aiSplitVar[iNodeID] = -1;
     adSplitPoint[iNodeID] = dShrinkage*dPrediction;

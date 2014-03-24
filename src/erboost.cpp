@@ -5,9 +5,9 @@
 //------------------------------------------------------------------------------
 //  by Greg Ridgeway  Copyright (C) 2003
 #include<vector>
-#include "erboost.h"
+#include "NPtweedie.h"
 
-unsigned long erboost_setup
+unsigned long NPtweedie_setup
 (
     double *adY,
     double *adOffset,
@@ -34,7 +34,7 @@ unsigned long erboost_setup
 
     hr = pData->SetData(adX,aiXOrder,adY,adOffset,adWeight,adMisc,
                         cRows,cCols,acVarClasses,alMonotoneVar);
-    if(erboost_FAILED(hr))
+    if(NPtweedie_FAILED(hr))
     {
         goto Error;
     }
@@ -46,7 +46,7 @@ unsigned long erboost_setup
         pDist = new CExpectile(adMisc[0]);
         if(pDist==NULL)
         {
-            hr = erboost_OUTOFMEMORY;
+            hr = NPtweedie_OUTOFMEMORY;
             goto Error;
         }
     }
@@ -56,7 +56,7 @@ unsigned long erboost_setup
 
     if(pDist==NULL)
     {
-        hr = erboost_INVALIDARG;
+        hr = NPtweedie_INVALIDARG;
         goto Error;
     }
 
@@ -68,9 +68,9 @@ Error:
 
 
 
-erboostRESULT erboost_transfer_to_R
+NPtweedieRESULT NPtweedie_transfer_to_R
 (
-    Cerboost *perboost,
+    CNPtweedie *pNPtweedie,
     VEC_VEC_CATEGORIES &vecSplitCodes,
     int *aiSplitVar,
     double *adSplitPoint,
@@ -83,9 +83,9 @@ erboostRESULT erboost_transfer_to_R
     int cCatSplitsOld
 )
 {
-    erboostRESULT hr = erboost_OK;
+    NPtweedieRESULT hr = NPtweedie_OK;
 
-    hr = perboost->TransferTreeToRList(aiSplitVar,
+    hr = pNPtweedie->TransferTreeToRList(aiSplitVar,
                                    adSplitPoint,
                                    aiLeftNode,
                                    aiRightNode,
@@ -95,7 +95,7 @@ erboostRESULT erboost_transfer_to_R
                                    adPred,
                                    vecSplitCodes,
                                    cCatSplitsOld);
-    if(erboost_FAILED(hr)) goto Error;
+    if(NPtweedie_FAILED(hr)) goto Error;
 
 Cleanup:
     return hr;
@@ -104,7 +104,7 @@ Error:
 }
 
 
-erboostRESULT erboost_transfer_catsplits_to_R
+NPtweedieRESULT NPtweedie_transfer_catsplits_to_R
 (
     int iCatSplit,
     VEC_VEC_CATEGORIES &vecSplitCodes,
@@ -118,7 +118,7 @@ erboostRESULT erboost_transfer_catsplits_to_R
         aiSplitCodes[i] = vecSplitCodes[iCatSplit][i];
     }
 
-    return erboost_OK;
+    return NPtweedie_OK;
 }
 
 

@@ -7,14 +7,14 @@
     #undef ERROR
     #include <R.h>
 
-    #define erboost_FAILED(hr) ((unsigned long)hr != 0)
-    typedef unsigned long erboostRESULT;
-    #define erboost_OK 0
-    #define erboost_FAIL 1
-    #define erboost_INVALIDARG 2
-    #define erboost_OUTOFMEMORY 3
-    #define erboost_INVALID_DATA 4
-    #define erboost_NOTIMPL 5
+    #define NPtweedie_FAILED(hr) ((unsigned long)hr != 0)
+    typedef unsigned long NPtweedieRESULT;
+    #define NPtweedie_OK 0
+    #define NPtweedie_FAIL 1
+    #define NPtweedie_INVALIDARG 2
+    #define NPtweedie_OUTOFMEMORY 3
+    #define NPtweedie_INVALID_DATA 4
+    #define NPtweedie_NOTIMPL 5
 
     #define LEVELS_PER_CHUNK ((unsigned long) 1)
 

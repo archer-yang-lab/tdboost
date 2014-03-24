@@ -31,7 +31,7 @@ public:
     CDistribution();
     virtual ~CDistribution();
 
-    virtual erboostRESULT ComputeWorkingResponse(double *adY,
+    virtual NPtweedieRESULT ComputeWorkingResponse(double *adY,
                                            double *adMisc,
                                            double *adOffset,
                                            double *adF, 
@@ -40,7 +40,7 @@ public:
                                            bool *afInBag,
                                            unsigned long nTrain) = 0;
 
-    virtual erboostRESULT InitF(double *adY,
+    virtual NPtweedieRESULT InitF(double *adY,
                           double *adMisc,
                           double *adOffset,
                           double *adWeight,
@@ -54,7 +54,7 @@ public:
                             double *adF,
                             unsigned long cLength) = 0;
 
-    virtual erboostRESULT FitBestConstant(double *adY,
+    virtual NPtweedieRESULT FitBestConstant(double *adY,
                                     double *adMisc,
                                     double *adOffset,
                                     double *adW,

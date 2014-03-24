@@ -22,12 +22,12 @@ CNodeContinuous::~CNodeContinuous()
 
 
 
-erboostRESULT CNodeContinuous::PrintSubtree
+NPtweedieRESULT CNodeContinuous::PrintSubtree
 (
     unsigned long cIndent
 )
 {
-    erboostRESULT hr = erboost_OK;
+    NPtweedieRESULT hr = NPtweedie_OK;
     unsigned long i = 0;
     
     for(i=0; i< cIndent; i++) Rprintf("  ");
@@ -109,19 +109,19 @@ signed char CNodeContinuous::WhichNode
 
 
 
-erboostRESULT CNodeContinuous::RecycleSelf
+NPtweedieRESULT CNodeContinuous::RecycleSelf
 (
     CNodeFactory *pNodeFactory
 )
 {
-    erboostRESULT hr = erboost_OK;
+    NPtweedieRESULT hr = NPtweedie_OK;
     pNodeFactory->RecycleNode(this);
     return hr;
 };
 
 
 
-erboostRESULT CNodeContinuous::TransferTreeToRList
+NPtweedieRESULT CNodeContinuous::TransferTreeToRList
 (
     int &iNodeID,
     CDataset *pData,
@@ -138,7 +138,7 @@ erboostRESULT CNodeContinuous::TransferTreeToRList
     double dShrinkage
 )
 {
-    erboostRESULT hr = erboost_OK;
+    NPtweedieRESULT hr = NPtweedie_OK;
     int iThisNodeID = iNodeID;
 
     aiSplitVar[iThisNodeID] = iSplitVar;
@@ -163,7 +163,7 @@ erboostRESULT CNodeContinuous::TransferTreeToRList
                                         vecSplitCodes,
                                         cCatSplitsOld,
                                         dShrinkage);
-    if(erboost_FAILED(hr)) goto Error;
+    if(NPtweedie_FAILED(hr)) goto Error;
 
     aiRightNode[iThisNodeID] = iNodeID;
     hr = pRightNode->TransferTreeToRList(iNodeID,
@@ -179,7 +179,7 @@ erboostRESULT CNodeContinuous::TransferTreeToRList
                                          vecSplitCodes,
                                          cCatSplitsOld,
                                          dShrinkage);
-    if(erboost_FAILED(hr)) goto Error;
+    if(NPtweedie_FAILED(hr)) goto Error;
 
     aiMissingNode[iThisNodeID] = iNodeID;
     hr = pMissingNode->TransferTreeToRList(iNodeID,
@@ -195,7 +195,7 @@ erboostRESULT CNodeContinuous::TransferTreeToRList
                                            vecSplitCodes,
                                            cCatSplitsOld,
                                            dShrinkage);
-    if(erboost_FAILED(hr)) goto Error;
+    if(NPtweedie_FAILED(hr)) goto Error;
 
 Cleanup:
     return hr;

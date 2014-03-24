@@ -14,8 +14,8 @@
 //
 //------------------------------------------------------------------------------
 
-#ifndef TREerboost_H
-#define TREerboost_H
+#ifndef TRENPtweedie_H
+#define TRENPtweedie_H
 
 #include <cstdio>
 #include <cfloat>
@@ -32,8 +32,8 @@ public:
     CCARTTree();
     ~CCARTTree();
 
-    erboostRESULT Initialize(CNodeFactory *pNodeFactory);
-    erboostRESULT grow(double *adZ, 
+    NPtweedieRESULT Initialize(CNodeFactory *pNodeFactory);
+    NPtweedieRESULT grow(double *adZ, 
                  CDataset *pData, 
                  double *adAlgW,
                  double *adF,
@@ -46,9 +46,9 @@ public:
                  unsigned long *aiNodeAssign,
                  CNodeSearch *aNodeSearch,
                  VEC_P_NODETERMINAL &vecpTermNodes);
-    erboostRESULT Reset();
+    NPtweedieRESULT Reset();
 
-    erboostRESULT TransferTreeToRList(CDataset *pData,
+    NPtweedieRESULT TransferTreeToRList(CDataset *pData,
                                 int *aiSplitVar,
                                 double *adSplitPoint,
                                 int *aiLeftNode,
@@ -61,36 +61,36 @@ public:
                                 int cCatSplitsOld,
                                 double dShrinkage);
 
-    erboostRESULT PredictValid(CDataset *pData, 
+    NPtweedieRESULT PredictValid(CDataset *pData, 
                          unsigned long nValid, 
                          double *adFadj);
 
-    erboostRESULT Predict(double *adX,
+    NPtweedieRESULT Predict(double *adX,
                     unsigned long cRow, 
                     unsigned long cCol, 
                     unsigned long iRow, 
                     double &dFadj);
-    erboostRESULT Adjust(unsigned long *aiNodeAssign,
+    NPtweedieRESULT Adjust(unsigned long *aiNodeAssign,
                    double *adFadj,
                    unsigned long cTrain,
                    VEC_P_NODETERMINAL &vecpTermNodes,
                    unsigned long cMinObsInNode);
 
-    erboostRESULT GetNodeCount(int &cNodes);
-    erboostRESULT SetShrinkage(double dShrink)
+    NPtweedieRESULT GetNodeCount(int &cNodes);
+    NPtweedieRESULT SetShrinkage(double dShrink)
     {
         this->dShrink = dShrink;
-        return erboost_OK;
+        return NPtweedie_OK;
     }
     double GetShrinkage() {return dShrink;}
 
-    erboostRESULT Print();
-    erboostRESULT GetVarRelativeInfluence(double *adRelInf);
+    NPtweedieRESULT Print();
+    NPtweedieRESULT GetVarRelativeInfluence(double *adRelInf);
 
 
     double dError; // total squared error before carrying out the splits
 private:
-    erboostRESULT GetBestSplit(CDataset *pData,
+    NPtweedieRESULT GetBestSplit(CDataset *pData,
                          unsigned long nTrain,
                          CNodeSearch *aNodeSearch,
                          unsigned long cTerminalNodes,
@@ -130,7 +130,7 @@ private:
 typedef CCARTTree *PCCARTTree;
 
 
-#endif // TREerboost_H
+#endif // TRENPtweedie_H
 
 
 

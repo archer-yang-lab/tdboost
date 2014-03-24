@@ -27,12 +27,12 @@ CNodeCategorical::~CNodeCategorical()
 }
 
 
-erboostRESULT CNodeCategorical::PrintSubtree
+NPtweedieRESULT CNodeCategorical::PrintSubtree
 (
     unsigned long cIndent
 )
 {
-    erboostRESULT hr = erboost_OK;
+    NPtweedieRESULT hr = NPtweedie_OK;
     unsigned long i = 0;
     
     for(i=0; i< cIndent; i++) Rprintf("  ");
@@ -126,19 +126,19 @@ signed char CNodeCategorical::WhichNode
 
 
 
-erboostRESULT CNodeCategorical::RecycleSelf
+NPtweedieRESULT CNodeCategorical::RecycleSelf
 (
     CNodeFactory *pNodeFactory
 )
 {
-    erboostRESULT hr = erboost_OK;
+    NPtweedieRESULT hr = NPtweedie_OK;
     hr = pNodeFactory->RecycleNode(this);
     return hr;
 };
 
 
 
-erboostRESULT CNodeCategorical::TransferTreeToRList
+NPtweedieRESULT CNodeCategorical::TransferTreeToRList
 (
     int &iNodeID,
     CDataset *pData,
@@ -155,7 +155,7 @@ erboostRESULT CNodeCategorical::TransferTreeToRList
     double dShrinkage
 )
 {
-    erboostRESULT hr = erboost_OK;
+    NPtweedieRESULT hr = NPtweedie_OK;
 
     int iThisNodeID = iNodeID;
     unsigned long cCatSplits = vecSplitCodes.size();
@@ -191,7 +191,7 @@ erboostRESULT CNodeCategorical::TransferTreeToRList
                                         vecSplitCodes,
                                         cCatSplitsOld,
                                         dShrinkage);
-    if(erboost_FAILED(hr)) goto Error;
+    if(NPtweedie_FAILED(hr)) goto Error;
 
     aiRightNode[iThisNodeID] = iNodeID;
     hr = pRightNode->TransferTreeToRList(iNodeID,
@@ -207,7 +207,7 @@ erboostRESULT CNodeCategorical::TransferTreeToRList
                                          vecSplitCodes,
                                          cCatSplitsOld,
                                          dShrinkage);
-    if(erboost_FAILED(hr)) goto Error;
+    if(NPtweedie_FAILED(hr)) goto Error;
 
     aiMissingNode[iThisNodeID] = iNodeID;
     hr = pMissingNode->TransferTreeToRList(iNodeID,
@@ -223,7 +223,7 @@ erboostRESULT CNodeCategorical::TransferTreeToRList
                                            vecSplitCodes,
                                            cCatSplitsOld,
                                            dShrinkage);
-    if(erboost_FAILED(hr)) goto Error;
+    if(NPtweedie_FAILED(hr)) goto Error;
 
 
 Cleanup:
