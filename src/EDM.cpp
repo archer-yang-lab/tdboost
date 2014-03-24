@@ -11,8 +11,8 @@ CEDM::~CEDM()
 
 }
 
-
-NPtweedieRESULT CEDM::ComputeWorkingResponse
+// compute gradient function
+NPtweedieRESULT CEDM::ComputeWorkingResponse 
 (
     double *adY,
     double *adMisc,
@@ -26,28 +26,29 @@ NPtweedieRESULT CEDM::ComputeWorkingResponse
 {
 	NPtweedieRESULT hr = NPtweedie_OK;
     unsigned long i = 0;
+    double dF = 0.0;
     
     if((adY == NULL) || (adF == NULL) || (adZ == NULL) || (adWeight == NULL))
     {
         hr = NPtweedie_INVALIDARG;
         goto Error;
     }
-    
     if(adOffset == NULL)
     {
-		for(i=0; i<nTrain; i++)
-	    {
-			adZ[i] = (adY[i] > adF[i]) ? dAlpha*(adY[i]-adF[i]) : (1.0-dAlpha)*(adY[i]-adF[i]);
-	    }
+        for(i=0; i<nTrain; i++)
+        {
+			adZ[i] = -adY[i] * exp((1.0-dAlpha)*adF[i]) + exp((2.0-dAlpha)*adF[i]);
+        }
     }
-	else
-	{
-		for(i=0; i<nTrain; i++)
-	    {
-			adZ[i] = (adY[i] > adF[i]+adOffset[i]) ? dAlpha*(adY[i]-adOffset[i]-adF[i]) : (1.0-dAlpha)*(adY[i]-adOffset[i]-adF[i]);
-	    }
-	}
-    
+    else
+    {
+        for(i=0; i<nTrain; i++)
+        {
+			dF = adF[i] + adOffset[i];
+			adZ[i] = -adY[i] * exp((1.0-dAlpha)*dF) + exp((2.0-dAlpha)*dF);
+        }
+    }
+
 Cleanup:
     return hr;
 Error:
@@ -57,7 +58,7 @@ Error:
 
 
 
-
+// compute likelihood function
 double CEDM::Deviance
 (
     double *adY,
@@ -71,36 +72,24 @@ double CEDM::Deviance
     unsigned long i=0;
     double dL = 0.0;
     double dW = 0.0;
+    double dF = 0.0;
     
 	if(adOffset == NULL)
     {
-        for(i=0; i<cLength; i++)
-        {
-            if(adY[i] > adF[i])
-            {
-                dL += adWeight[i]*dAlpha*(adY[i] - adF[i])*(adY[i] - adF[i]);
-            }
-            else
-            {
-                dL += adWeight[i]*(1.0-dAlpha)*(adY[i] - adF[i])*(adY[i] - adF[i]);
-            }
-            dW += adWeight[i];
-        }
+      	for(i=0; i<cLength; i++)
+      	{
+         	dL += adWeight[i] * (-adY[i] * exp((1.0-dAlpha) * adF[i]) / (1.0-dAlpha) + exp((2.0-dAlpha)* adF[i]) / (2.0-dAlpha));
+         	dW += adWeight[i];
+      	}
     }
 	else
 	{
-        for(i=0; i<cLength; i++)
-        {
-            if(adY[i] > adF[i] + adOffset[i])
-            {
-                dL += adWeight[i]*dAlpha*(adY[i]-adOffset[i]-adF[i])*(adY[i]-adOffset[i]-adF[i]);
-            }
-            else
-            {
-                dL += adWeight[i]*(1.0-dAlpha)*(adY[i]-adOffset[i]-adF[i])*(adY[i]-adOffset[i]-adF[i]);
-            }
-            dW += adWeight[i];
-        }
+      	for(i=0; i<cLength; i++)
+      	{
+         	dF = adF[i] + adOffset[i];
+         	dL += adWeight[i] * (-adY[i] * exp((1.0-dAlpha) * dF) / (1.0-dAlpha) + exp((2.0-dAlpha)* dF) / (2.0-dAlpha));
+         	dW += adWeight[i];
+      	}
     }
 	
     return dL/dW;
@@ -110,7 +99,7 @@ double CEDM::Deviance
 
 
 
-
+// compute Initial value
 NPtweedieRESULT CEDM::InitF
 (
     double *adY,
@@ -121,71 +110,30 @@ NPtweedieRESULT CEDM::InitF
     unsigned long cLength
 )
 {
-        double dOffset=0.0;
+	    unsigned long i=0;
+   	    double dTemp = 0.0;
 
-        vector<double> Yorder;
-        Yorder.resize(cLength);
-        Yorder.assign(Yorder.size(),0.0);
+        // Newton method for solving for F
+        // should take about 3-6 iterations.
+        double dNum=0.0;         // numerator
+        double dDen=0.0;         // denominator
+        double dNewtonStep=1.0;  // change
+        dInitF = 0.0;
+//        while(fabs(dNewtonStep) > 0.0001)
+//        {
+            dNum=0.0;
+            dDen=0.0;
+            for(i=0; i<cLength; i++)
+            {
+				dTemp = dInitF + ((adOffset==NULL) ? 0.0 : adOffset[i]);
+                dNum += adWeight[i]*(-adY[i] * exp((1.0-dAlpha)*dTemp) + exp((2.0-dAlpha)*dTemp));
+                dDen += adWeight[i]*(-adY[i] * (1.0-dAlpha) * exp((1.0-dAlpha)*dTemp) + (2.0-dAlpha) * exp((2.0-dAlpha)*dTemp));
+            }
+            dNewtonStep = -dNum/dDen;
+            dInitF += dNewtonStep;
+//        }
 
-        for(unsigned long i=0;i<cLength;i++) 
-        {
-				dOffset = (adOffset==NULL) ? 0.0 : adOffset[i];
-                Yorder[i] = adY[i] - dOffset;
-        }
-
-        sort(Yorder.begin(),Yorder.end());
-        double Deviance;
-        double test;
-        unsigned long begin=0;
-        unsigned long end=cLength-1;
-
-             while (end>begin+1) 
-             {
-                     Deviance=0;
-                     test=floor(double(begin+end)/2.0);
-                     for (unsigned long j=0; j<test; j++)
-                     {
-                             Deviance += (1.0-dAlpha)*(Yorder[j]-Yorder[test]);
-                     }
-
-                     for (unsigned long j=cLength-1;j>test;j--) 
-                     {
-                             Deviance += dAlpha*(Yorder[j]-Yorder[test]);
-                     }
-
-                     if(Deviance>0) 
-                     {
-                             begin=test;
-                     }
-
-                     else
-                     {
-                             end=test;
-                     }
-             }
-
-             double Pnum=0;
-             for (unsigned long j=0;j<(begin+1);j++) 
-             {
-                     Pnum += (1.0-dAlpha)*(Yorder[j]);
-             }
-
-             for (unsigned long j=cLength-1;j>(end-1);j--) 
-             {
-                     Pnum += dAlpha*(Yorder[j]);
-             }
-
-             if (((1.0-dAlpha)*end + dAlpha*(cLength-end))==0)
-             {
-                     Pnum=0.0;  
-             }
-             else
-             {
-                     Pnum=Pnum / ((1.0-dAlpha)*end + dAlpha*(cLength-end));
-             }       	
-	
-        dInitF = Pnum;
-   
+	//	printf("%f\n", dInitF);
         return NPtweedie_OK;
 
 }
@@ -215,87 +163,49 @@ NPtweedieRESULT CEDM::FitBestConstant
 
     NPtweedieRESULT hr = NPtweedie_OK;
     
+    double dF = 0.0;
     unsigned long iObs = 0;
     unsigned long iNode = 0;
-    vector<vector<double> > vecadDiff;	
-    vecadDiff.resize(cTermNodes);
-	double dOffset;
+    vector<double> vecdNum;	
+    vector<double> vecdDen;	
+    vecdNum.resize(cTermNodes);
+    vecdNum.assign(vecdNum.size(),0.0);
+    vecdDen.resize(cTermNodes);
+    vecdDen.assign(vecdDen.size(),0.0);
 
-    for(iObs=0; iObs<nTrain; iObs++)
+	for(iObs=0; iObs<nTrain; iObs++)
+	{
+		if(afInBag[iObs])
+		{
+			dF = adF[iObs] + ((adOffset==NULL) ? 0.0 : adOffset[iObs]);
+           	vecdNum[aiNodeAssign[iObs]] += 
+				adW[iObs]*(-adY[iObs] * exp((1.0-dAlpha)*dF) + 
+				exp((2.0-dAlpha)*dF));
+           	vecdDen[aiNodeAssign[iObs]] += 
+				adW[iObs]*(-adY[iObs] * (1.0-dAlpha) * exp((1.0-dAlpha)*dF) + 
+				(2.0-dAlpha) * exp((2.0-dAlpha)*dF));
+       	}
+	}
+
+	for(iNode=0; iNode<cTermNodes; iNode++)
     {
-            if(afInBag[iObs])
-            {
-					dOffset = (adOffset==NULL) ? 0.0 : adOffset[iObs];
-                    vecadDiff[aiNodeAssign[iObs]].push_back(adY[iObs]-dOffset-adF[iObs]) ;            
-            }
-    }
-    
-    
-    for(iNode=0; iNode<cTermNodes; iNode++)
-    {
-        if(vecadDiff[iNode].size()!=0)
+        if(vecpTermNodes[iNode]!=NULL)
         {
-                sort(vecadDiff[iNode].begin(),vecadDiff[iNode].end());
-                double Deviance;
-                double test;
-                unsigned long Len = vecadDiff[iNode].size();
-                unsigned long begin=0;
-                unsigned long end=Len-1;
-
-                     while (end>begin+1) 
-                     {
-                             Deviance=0;
-                             test=floor(double(begin+end)/2.0);
-                             for (unsigned long j=0; j<test; j++)
-                             {
-                                     Deviance += (1.0-dAlpha)*(vecadDiff[iNode][j]-vecadDiff[iNode][test]);
-                             }
-
-                             for (unsigned long j=Len-1;j>test;j--) 
-                             {
-                                     Deviance += dAlpha*(vecadDiff[iNode][j]-vecadDiff[iNode][test]);
-                             }
-
-                             if(Deviance>0) 
-                             {
-                                     begin=test;
-                             }
-
-                             else
-                             {
-                                     end=test;
-                             }
-                     }
-
-                     double Pnum=0;
-                     for (unsigned long j=0;j<(begin+1);j++) 
-                     {
-                             Pnum += (1.0-dAlpha)*(vecadDiff[iNode][j]);
-                     }
-
-                     for (unsigned long j=Len-1;j>(end-1);j--) 
-                     {
-                             Pnum += dAlpha*(vecadDiff[iNode][j]);
-                     }
-
-                     if (((1.0-dAlpha)*end + dAlpha*(Len-end))==0)
-                     {
-                             Pnum=0.0;  
-                     }
-                     else
-                     {
-                             Pnum=Pnum / ((1.0-dAlpha)*end + dAlpha*(Len-end));
-                     }       	
-
-                vecpTermNodes[iNode] ->dPrediction = Pnum;
-                        
-         }
-    }	
+			if(vecdDen[iNode] == 0)
+            {
+                vecpTermNodes[iNode]->dPrediction = 0.0;
+            }
+            else
+            {
+                vecpTermNodes[iNode]->dPrediction -= vecdNum[iNode]/vecdDen[iNode];
+			}
+        }
+    }
 
     return hr;
 }
 
-
+// compute likelihood improvement after updates
 double CEDM::BagImprovement
 (
     double *adY,
@@ -314,29 +224,16 @@ double CEDM::BagImprovement
 	double dW = 0.0;
     unsigned long i = 0;
     double dF = 0.0;
+	double ddF = 0.0;
 
     for(i=0; i<nTrain; i++)
     {
         if(!afInBag[i])
         {
 			dF = adF[i] + ((adOffset==NULL) ? 0.0 : adOffset[i]);
-			if(adY[i] > dF)
-            {
-                dL += adWeight[i]*dAlpha*(adY[i]-dF)*(adY[i]-dF);
-            }
-            else
-            {
-                dL += adWeight[i]*(1.0-dAlpha)*(adY[i]-dF)*(adY[i]-dF);
-            }
-			
-			if(adY[i] > (dF+dStepSize*adFadj[i]))
-			{
-                dLadj += adWeight[i]*dAlpha*(adY[i]-dF-dStepSize*adFadj[i])*(adY[i]-dF-dStepSize*adFadj[i]);
-            }
-            else
-            {
-                dLadj += adWeight[i]*(1.0-dAlpha)*(adY[i]-dF-dStepSize*adFadj[i])*(adY[i]-dF-dStepSize*adFadj[i]);
-            }
+			ddF = dF + dStepSize*adFadj[i];
+         	dL += adWeight[i] * (-adY[i] * exp((1.0-dAlpha) * dF) / (1.0-dAlpha) + exp((2.0-dAlpha)* dF) / (2.0-dAlpha));
+         	dLadj += adWeight[i] * (-adY[i] * exp((1.0-dAlpha) * ddF) / (1.0-dAlpha) + exp((2.0-dAlpha)* ddF) / (2.0-dAlpha));    
             dW += adWeight[i];
         }
     }
