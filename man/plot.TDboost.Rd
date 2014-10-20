@@ -47,9 +47,9 @@ graphics and only returns the grid of evaluation points and their average
 predictions.
 }
 \references{
-Yang, Y. and Zou, H. (2013), \dQuote{Nonparametric Multiple Expectile Regression via ER-Boost,} \emph{Journal of Statistical Computation and Simulation}. Accepted.
+Yang, Y. and Zou, H. (2013), \dQuote{A Boosted Nonparametric Tweedie Model for Insurance Premium.} Preprint.
 
-BugReport: \url{http://code.google.com/p/TDboost/}\cr
+
 
 G. Ridgeway (1999). \dQuote{The state of boosting,} \emph{Computing Science and
 Statistics} 31:172-181.
@@ -60,7 +60,7 @@ Statistics} 31:172-181.
 J.H. Friedman (2001). "Greedy Function Approximation: A Gradient Boosting
 Machine," Annals of Statistics 29(4).
 }
-\author{Yi Yang \email{yiyang@umn.edu} and Hui Zou \email{hzou@stat.umn.edu}}
+\author{Yi Yang \email{yiyang@umn.edu}, Wei Qian \email{weiqian@stat.umn.edu} and Hui Zou \email{hzou@stat.umn.edu}}
 
 \seealso{ \code{\link{TDboost}}, \code{\link{TDboost.object}}, \code{\link[graphics]{plot}} }
 

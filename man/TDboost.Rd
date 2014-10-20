@@ -2,11 +2,11 @@
 \alias{TDboost}
 \alias{TDboost.more}
 \alias{TDboost.fit}
-\title{ER-Boost Expectile Regression Modeling}
-\description{Fits ER-Boost Expectile Regression models.}
+\title{TDboost Tweedie Regression Modeling}
+\description{Fits TDboost Tweedie Regression models.}
 \usage{
 TDboost(formula = formula(data),
-    distribution = list(name="expectile",alpha=0.5),
+    distribution = list(name="EDM",alpha=0.5),
     data = list(),
     weights,
     var.monotone = NULL,
@@ -23,7 +23,7 @@ TDboost(formula = formula(data),
 TDboost.fit(x,y,
         offset = NULL,
         misc = NULL,
-        distribution = list(name="expectile",alpha=0.5),
+        distribution = list(name="EDM",alpha=0.5),
         w = NULL,
         var.monotone = NULL,
         n.trees = 100,
@@ -50,9 +50,8 @@ TDboost.more(object,
    the initial call to \code{TDboost} then it is the user's responsibility to 
    resupply the offset to \code{\link{TDboost.more}}.}
 \item{distribution}{a list with a component \code{name} specifying the distribution 
-   and any additional parameters needed. Expectile regression is available and \code{distribution} must a list of the form 
-   \code{list(name="expectile",alpha=0.25)} where \code{alpha} is the expectile 
-   to estimate. The current version's expectile regression methods do 
+   and any additional parameters needed. Tweedie regression is available and \code{distribution} must a list of the form 
+   \code{list(name="EDM",alpha=0.25)} where \code{alpha} is the index parameter. The current version's Tweedie regression methods do 
    not handle non-constant weights and will stop.}
 \item{data}{an optional data frame containing the variables in the model. By
    default the variables are taken from \code{environment(formula)}, typically 
@@ -117,7 +116,7 @@ variable.}
 
 }
 \details{
-Expectile regression (Newey & Powell 1987) is a nice tool for estimating the conditional expectiles of a response variable given a set of covariates. This package implements a regression tree based gradient boosting estimator for nonparametric multiple expectile regression. The code is a modified version of \code{gbm} library (\url{http://cran.r-project.org/web/packages/gbm/}) originally written by Greg Ridgeway.
+This package implements a regression tree based gradient boosting estimator for nonparametric multiple Tweedie regression. The code is a modified version of \code{gbm} library (\url{http://cran.r-project.org/web/packages/gbm/}) originally written by Greg Ridgeway.
 
 Boosting is the process of iteratively adding basis functions in a greedy
 fashion so that each additional basis function further reduces the selected
@@ -141,9 +140,9 @@ For general practice \code{TDboost} is preferable.
 \code{\link{TDboost.object}}.
 }
 \references{
-Yang, Y. and Zou, H. (2013), \dQuote{Nonparametric Multiple Expectile Regression via ER-Boost,} \emph{Journal of Statistical Computation and Simulation}. Accepted.
+Yang, Y. and Zou, H. (2013), \dQuote{A Boosted Nonparametric Tweedie Model for Insurance Premium.} Preprint.
 
-BugReport: \url{http://code.google.com/p/TDboost/}\cr
+
 
 G. Ridgeway (1999). \dQuote{The state of boosting,} \emph{Computing Science and
 Statistics} 31:172-181.
@@ -158,8 +157,7 @@ and Data Analysis} 38(4):367-378.
 
 }
 
-\author{Yi Yang \email{yiyang@umn.edu} and Hui Zou \email{hzou@stat.umn.edu}
-}
+\author{Yi Yang \email{yiyang@umn.edu}, Wei Qian \email{weiqian@stat.umn.edu} and Hui Zou \email{hzou@stat.umn.edu}}
 
 
 \seealso{
@@ -197,8 +195,8 @@ TDboost1 <- TDboost(Y~X1+X2+X3+X4+X5+X6,         # formula
     var.monotone=c(0,0,0,0,0,0), # -1: monotone decrease,
                                  # +1: monotone increase,
                                  #  0: no monotone restrictions
-    distribution=list(name="expectile",alpha=0.5),
-                                 # expectile
+    distribution=list(name="EDM",alpha=0.5),
+                                 # Tweedie
     n.trees=3000,                # number of trees
     shrinkage=0.005,             # shrinkage or learning rate,
                                  # 0.001 to 0.1 usually work

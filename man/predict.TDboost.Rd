@@ -2,7 +2,7 @@
 \alias{predict.TDboost}
 \title{ Predict method for TDboost Model Fits }
 \description{
-  Predicted values based on an ER-Boost Expectile regression model object
+  Predicted values based on an TDboost Tweedie regression model object
 }
 \usage{
 \method{predict}{TDboost}(object,
@@ -35,7 +35,7 @@ as the one originally used to fit the model.
 
 Returns a vector of predictions. By default the predictions are on the scale of f(x).
 }
-\author{Yi Yang \email{yiyang@umn.edu} and Hui Zou \email{hzou@stat.umn.edu}}
+\author{Yi Yang \email{yiyang@umn.edu}, Wei Qian \email{weiqian@stat.umn.edu} and Hui Zou \email{hzou@stat.umn.edu}}
 \seealso{
 \code{\link{TDboost}}, \code{\link{TDboost.object}}
 }

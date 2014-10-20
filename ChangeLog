@@ -1,5 +1,5 @@
 CHANGELOG - Record of Changes for TDboost
 Please find below the list of the various changes and improvements that were part of each successive update.
 
-1.2:
-* [fixed] Fixed a data type bug in the C++ source code.
+1.0:
+* The initial release.

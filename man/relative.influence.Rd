@@ -27,9 +27,9 @@ methods for computing the relative influence in \code{\link{summary.TDboost}}.
 Returns an unprocessed vector of estimated relative influences.
 }
 \references{
-Yang, Y. and Zou, H. (2013), \dQuote{Nonparametric Multiple Expectile Regression via ER-Boost,} \emph{Journal of Statistical Computation and Simulation}. Accepted.
+Yang, Y. and Zou, H. (2013), \dQuote{A Boosted Nonparametric Tweedie Model for Insurance Premium.} Preprint.
 
-BugReport: \url{http://code.google.com/p/TDboost/}\cr
+
 
 G. Ridgeway (1999). \dQuote{The state of boosting,} \emph{Computing Science and
 Statistics} 31:172-181.
@@ -43,7 +43,7 @@ Machine," Annals of Statistics 29(5):1189-1232.
 L. Breiman (2001). "Random Forests," Available at \url{ftp://ftp.stat.berkeley.edu/pub/users/breiman/randomforest2001.pdf}.
 
 }
-\author{Yi Yang \email{yiyang@umn.edu} and Hui Zou \email{hzou@stat.umn.edu}}
+\author{Yi Yang \email{yiyang@umn.edu}, Wei Qian \email{weiqian@stat.umn.edu} and Hui Zou \email{hzou@stat.umn.edu}}
 
 \seealso{ \code{\link{summary.TDboost}} }
 

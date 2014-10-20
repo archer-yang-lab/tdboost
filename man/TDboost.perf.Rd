@@ -37,9 +37,9 @@ with \code{cv.folds}>1}
 \code{TDboost.perf} returns the estimated optimal number of iterations. The method 
 of computation depends on the \code{method} argument.}
 \references{
-Yang, Y. and Zou, H. (2013), \dQuote{Nonparametric Multiple Expectile Regression via ER-Boost,} \emph{Journal of Statistical Computation and Simulation}. Accepted.
+Yang, Y. and Zou, H. (2013), \dQuote{A Boosted Nonparametric Tweedie Model for Insurance Premium.} Preprint.
 
-BugReport: \url{http://code.google.com/p/TDboost/}\cr
+
 
 G. Ridgeway (1999). \dQuote{The state of boosting,} \emph{Computing Science and
 Statistics} 31:172-181.
@@ -50,7 +50,7 @@ Statistics} 31:172-181.
 number of boosting iterations," a working paper available at
 \url{http://www.i-pensieri.com/gregr/TDboost.shtml}.
 }
-\author{Yi Yang \email{yiyang@umn.edu} and Hui Zou \email{hzou@stat.umn.edu}}
+\author{Yi Yang \email{yiyang@umn.edu}, Wei Qian \email{weiqian@stat.umn.edu} and Hui Zou \email{hzou@stat.umn.edu}}
 \seealso{\code{\link{TDboost}}, \code{\link{TDboost.object}}}
 
 \keyword{nonlinear}
