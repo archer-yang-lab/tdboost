@@ -5,11 +5,11 @@
 //------------------------------------------------------------------------------
 //  by Greg Ridgeway  Copyright (C) 2003
 //
-//  File:       NPtweedie.h
+//  File:       TDboost.h
 //
 //  License:    GNU GPL (version 2 or later)
 //
-//  Contents:   Entry point for NPtweedie.dll
+//  Contents:   Entry point for TDboost.dll
 //            
 //  Owner:      gregr@rand.org
 //
@@ -21,12 +21,12 @@
 #include "dataset.h"
 #include "distribution.h"
 #include "EDM.h"
-#include "NPtweedie_engine.h"
+#include "TDboost_engine.h"
 
 typedef vector<char> VEC_CATEGORIES;
 typedef vector<VEC_CATEGORIES> VEC_VEC_CATEGORIES;
 
-NPtweedieRESULT NPtweedie_setup
+TDboostRESULT TDboost_setup
 (
     double *adY,
     double *adOffset,
@@ -50,9 +50,9 @@ NPtweedieRESULT NPtweedie_setup
 );
 
 
-NPtweedieRESULT NPtweedie_transfer_to_R
+TDboostRESULT TDboost_transfer_to_R
 (
-    CNPtweedie *pNPtweedie,
+    CTDboost *pTDboost,
     VEC_VEC_CATEGORIES &vecSplitCodes,
     int *aiSplitVar,
     double *adSplitPoint,
@@ -66,7 +66,7 @@ NPtweedieRESULT NPtweedie_transfer_to_R
 );
 
 
-NPtweedieRESULT NPtweedie_transfer_catsplits_to_R
+TDboostRESULT TDboost_transfer_catsplits_to_R
 (
     int iCatSplit,
     VEC_VEC_CATEGORIES &vecSplitCodes,

@@ -14,8 +14,8 @@
 //
 //------------------------------------------------------------------------------
 
-#ifndef NODNPtweedie_H
-#define NODNPtweedie_H
+#ifndef NODTDboost_H
+#define NODTDboost_H
 
 #include <vector>
 #include "dataset.h"
@@ -36,11 +36,11 @@ public:
 
     CNode();
     virtual ~CNode();
-    virtual NPtweedieRESULT Adjust(unsigned long cMinObsInNode);
-    virtual NPtweedieRESULT Predict(CDataset *pData, 
+    virtual TDboostRESULT Adjust(unsigned long cMinObsInNode);
+    virtual TDboostRESULT Predict(CDataset *pData, 
                             unsigned long iRow, 
                             double &dFadj);
-    virtual NPtweedieRESULT Predict(double *adX,
+    virtual TDboostRESULT Predict(double *adX,
                             unsigned long cRow,
                             unsigned long cCol,
                             unsigned long iRow,
@@ -78,8 +78,8 @@ public:
     }
 
 
-    virtual NPtweedieRESULT PrintSubtree(unsigned long cIndent);
-    virtual NPtweedieRESULT TransferTreeToRList(int &iNodeID,
+    virtual TDboostRESULT PrintSubtree(unsigned long cIndent);
+    virtual TDboostRESULT TransferTreeToRList(int &iNodeID,
                                         CDataset *pData,
                                         int *aiSplitVar,
                                         double *adSplitPoint,
@@ -94,8 +94,8 @@ public:
                                         double dShrinkage);
 
     double TotalError();
-    virtual NPtweedieRESULT GetVarRelativeInfluence(double *adRelInf);
-    virtual NPtweedieRESULT RecycleSelf(CNodeFactory *pNodeFactory) = 0;
+    virtual TDboostRESULT GetVarRelativeInfluence(double *adRelInf);
+    virtual TDboostRESULT RecycleSelf(CNodeFactory *pNodeFactory) = 0;
 
     double dPrediction;
     double dTrainW;   // total training weight in node
@@ -114,7 +114,7 @@ protected:
 
 typedef CNode *PCNode;
 
-#endif // NODNPtweedie_H
+#endif // NODTDboost_H
 
 
 

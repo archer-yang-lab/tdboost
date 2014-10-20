@@ -29,10 +29,10 @@ public:
 
     CNodeTerminal();
     ~CNodeTerminal();
-    NPtweedieRESULT Adjust(unsigned long cMinObsInNode);
+    TDboostRESULT Adjust(unsigned long cMinObsInNode);
 
-    NPtweedieRESULT PrintSubtree(unsigned long cIndent);
-    NPtweedieRESULT TransferTreeToRList(int &iNodeID,
+    TDboostRESULT PrintSubtree(unsigned long cIndent);
+    TDboostRESULT TransferTreeToRList(int &iNodeID,
                                 CDataset *pData,
                                 int *aiSplitVar,
                                 double *adSplitPoint,
@@ -46,18 +46,18 @@ public:
                                 int cCatSplitsOld,
                                 double dShrinkage);
 
-    NPtweedieRESULT ApplyShrinkage(double dLambda);
-    NPtweedieRESULT Predict(CDataset *pData, 
+    TDboostRESULT ApplyShrinkage(double dLambda);
+    TDboostRESULT Predict(CDataset *pData, 
                     unsigned long i, 
                     double &dFadj);
-    NPtweedieRESULT Predict(double *adX,
+    TDboostRESULT Predict(double *adX,
                     unsigned long cRow,
                     unsigned long cCol,
                     unsigned long iRow,
                     double &dFadj);
 
-    NPtweedieRESULT GetVarRelativeInfluence(double *adRelInf);
-    NPtweedieRESULT RecycleSelf(CNodeFactory *pNodeFactory);
+    TDboostRESULT GetVarRelativeInfluence(double *adRelInf);
+    TDboostRESULT RecycleSelf(CNodeFactory *pNodeFactory);
 };
 
 typedef CNodeTerminal *PCNodeTerminal;

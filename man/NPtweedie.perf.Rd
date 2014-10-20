@@ -1,26 +1,26 @@
-\name{NPtweedie.perf}
-\alias{NPtweedie.perf}
-\title{NPtweedie performance}
+\name{TDboost.perf}
+\alias{TDboost.perf}
+\title{TDboost performance}
 \description{
-Estimates the optimal number of boosting iterations for a \code{NPtweedie} object and
+Estimates the optimal number of boosting iterations for a \code{TDboost} object and
 optionally plots various performance measures
 }
 \usage{
-NPtweedie.perf(object, 
+TDboost.perf(object, 
          plot.it = TRUE, 
          oobag.curve = FALSE, 
          overlay = TRUE, 
          method)
 }
 \arguments{
-\item{object}{a \code{\link{NPtweedie.object}} created from an initial call to 
-\code{\link{NPtweedie}}.}
+\item{object}{a \code{\link{TDboost.object}} created from an initial call to 
+\code{\link{TDboost}}.}
 \item{plot.it}{an indicator of whether or not to plot the performance measures.
 Setting \code{plot.it=TRUE} creates two plots. The first plot plots 
 \code{object$train.error} (in black) and \code{object$valid.error} (in red) 
 versus the iteration number. The scale of the error measurement, shown on the 
 left vertical axis, depends on the \code{distribution} argument used in the 
-initial call to \code{\link{NPtweedie}}.}
+initial call to \code{\link{TDboost}}.}
 \item{oobag.curve}{indicates whether to plot the out-of-bag performance measures
 in a second plot.}
 \item{overlay}{if TRUE and oobag.curve=TRUE then a right y-axis is added to the 
@@ -30,16 +30,16 @@ function is plotted versus the iteration number.}
 of boosting iterations. \code{method="OOB"} computes the out-of-bag
 estimate and \code{method="test"} uses the test (or validation) dataset 
 to compute an out-of-sample estimate. \code{method="cv"} extracts the 
-optimal number of iterations using cross-validation if \code{NPtweedie} was called
+optimal number of iterations using cross-validation if \code{TDboost} was called
 with \code{cv.folds}>1}
 }
 \value{
-\code{NPtweedie.perf} returns the estimated optimal number of iterations. The method 
+\code{TDboost.perf} returns the estimated optimal number of iterations. The method 
 of computation depends on the \code{method} argument.}
 \references{
 Yang, Y. and Zou, H. (2013), \dQuote{Nonparametric Multiple Expectile Regression via ER-Boost,} \emph{Journal of Statistical Computation and Simulation}. Accepted.
 
-BugReport: \url{http://code.google.com/p/NPtweedie/}\cr
+BugReport: \url{http://code.google.com/p/TDboost/}\cr
 
 G. Ridgeway (1999). \dQuote{The state of boosting,} \emph{Computing Science and
 Statistics} 31:172-181.
@@ -48,10 +48,10 @@ Statistics} 31:172-181.
 
  G. Ridgeway (2003). "A note on out-of-bag estimation for estimating the optimal
 number of boosting iterations," a working paper available at
-\url{http://www.i-pensieri.com/gregr/NPtweedie.shtml}.
+\url{http://www.i-pensieri.com/gregr/TDboost.shtml}.
 }
 \author{Yi Yang \email{yiyang@umn.edu} and Hui Zou \email{hzou@stat.umn.edu}}
-\seealso{\code{\link{NPtweedie}}, \code{\link{NPtweedie.object}}}
+\seealso{\code{\link{TDboost}}, \code{\link{TDboost.object}}}
 
 \keyword{nonlinear}
 \keyword{survival}

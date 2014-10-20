@@ -4,11 +4,11 @@
 # age vignette. http://cran.r-project.org/web/packages/gbm.
 
 .onAttach <- function(libname, pkgname)
-     packageStartupMessage("Loaded NPtweedie ",
+     packageStartupMessage("Loaded TDboost ",
                            utils::packageVersion(pkgname, libname),"\n")
 
 
-predict.NPtweedie <- function(object,newdata,n.trees,
+predict.TDboost <- function(object,newdata,n.trees,
                         single.tree = FALSE,
                         ...)
 {
@@ -49,7 +49,7 @@ predict.NPtweedie <- function(object,newdata,n.trees,
    }
    i.ntree.order <- order(n.trees)
       
-   predF <- .Call("NPtweedie_pred",
+   predF <- .Call("TDboost_pred",
                   X=as.double(x),
                   cRows=as.integer(cRows),
                   cCols=as.integer(cCols),
@@ -59,7 +59,7 @@ predict.NPtweedie <- function(object,newdata,n.trees,
                   c.split=object$c.split,
                   var.type=as.integer(object$var.type),
                   single.tree = as.integer(single.tree),
-                  PACKAGE = "NPtweedie")
+                  PACKAGE = "TDboost")
    
    if(length(n.trees)>1) 
    {
@@ -70,14 +70,14 @@ predict.NPtweedie <- function(object,newdata,n.trees,
    
    if(!is.null(attr(object$Terms,"offset")))
    {
-      warning("predict.NPtweedie does not add the offset to the predicted values.")
+      warning("predict.TDboost does not add the offset to the predicted values.")
    }
 
    return(predF)
 }
 
 
-plot.NPtweedie <- function(x,
+plot.TDboost <- function(x,
                      i.var=1,
                      n.trees=x$n.trees,
                      continuous.resolution=100,
@@ -89,7 +89,7 @@ plot.NPtweedie <- function(x,
       i <- match(i.var,x$var.names)
       if(any(is.na(i)))
       {
-         stop("Plot variables not used in NPtweedie model fit: ",i.var[is.na(i)])
+         stop("Plot variables not used in TDboost model fit: ",i.var[is.na(i)])
       } else
       {
          i.var <- i
@@ -109,11 +109,11 @@ plot.NPtweedie <- function(x,
 
    if(length(i.var) > 3)
    {
-     warning("plot.NPtweedie creates up to 3-way interaction plots.\nplot.NPtweedie will only return the plotting data structure.")
+     warning("plot.TDboost creates up to 3-way interaction plots.\nplot.TDboost will only return the plotting data structure.")
      return.grid = TRUE
    }
 
-   # generate grid to evaluate NPtweedie model
+   # generate grid to evaluate TDboost model
    grid.levels <- vector("list",length(i.var))
    for(i in 1:length(i.var))
    {
@@ -135,7 +135,7 @@ plot.NPtweedie <- function(x,
    names(X) <- paste("X",1:length(i.var),sep="")
 
    # evaluate at each data point
-   X$y <- .Call("NPtweedie_plot",
+   X$y <- .Call("TDboost_plot",
                 X=as.double(data.matrix(X)),
                 cRows=as.integer(nrow(X)),
                 cCols=as.integer(ncol(X)),
@@ -145,7 +145,7 @@ plot.NPtweedie <- function(x,
                 trees=x$trees,
                 c.splits=x$c.splits,
                 var.type=as.integer(x$var.type),
-                PACKAGE = "NPtweedie")
+                PACKAGE = "TDboost")
 
    # transform categorical variables back to factors
    f.factor <- rep(FALSE,length(i.var))
@@ -261,7 +261,7 @@ plot.NPtweedie <- function(x,
 }
 
 
-NPtweedie.more <- function(object,
+TDboost.more <- function(object,
                      n.new.trees = 100,
                      data = NULL,
                      weights = NULL,
@@ -270,11 +270,11 @@ NPtweedie.more <- function(object,
 {
    if(is.null(object$Terms) && is.null(object$data))
    {
-      stop("The NPtweedie model was fit using NPtweedie.fit (rather than NPtweedie) and keep.data was set to FALSE. NPtweedie.more cannot locate the dataset.")
+      stop("The TDboost model was fit using TDboost.fit (rather than TDboost) and keep.data was set to FALSE. TDboost.more cannot locate the dataset.")
    }
    else if(is.null(object$data) && is.null(data))
    {
-      stop("keep.data was set to FALSE on original NPtweedie call and argument 'data' is NULL")
+      stop("keep.data was set to FALSE on original TDboost call and argument 'data' is NULL")
    }
    else if(is.null(object$data))
    {
@@ -322,7 +322,7 @@ NPtweedie.more <- function(object,
    }
    x <- as.vector(x)
 
-   NPtweedie.obj <- .Call("NPtweedie",
+   TDboost.obj <- .Call("TDboost",
                     Y = as.double(y),
                     Offset = as.double(offset),
                     X = as.double(x),
@@ -344,51 +344,51 @@ NPtweedie.more <- function(object,
                     n.cat.splits.old = length(object$c.splits),
                     n.trees.old = as.integer(object$n.trees),
                     verbose = as.integer(verbose),
-                    PACKAGE = "NPtweedie")
-   names(NPtweedie.obj) <- c("initF","fit","train.error","valid.error",
+                    PACKAGE = "TDboost")
+   names(TDboost.obj) <- c("initF","fit","train.error","valid.error",
                        "oobag.improve","trees","c.splits")
 
-   NPtweedie.obj$initF         <- object$initF
-   NPtweedie.obj$train.error   <- c(object$train.error, NPtweedie.obj$train.error)
-   NPtweedie.obj$valid.error   <- c(object$valid.error, NPtweedie.obj$valid.error)
-   NPtweedie.obj$oobag.improve <- c(object$oobag.improve, NPtweedie.obj$oobag.improve)
-   NPtweedie.obj$trees         <- c(object$trees, NPtweedie.obj$trees)
-   NPtweedie.obj$c.splits      <- c(object$c.splits, NPtweedie.obj$c.splits)
+   TDboost.obj$initF         <- object$initF
+   TDboost.obj$train.error   <- c(object$train.error, TDboost.obj$train.error)
+   TDboost.obj$valid.error   <- c(object$valid.error, TDboost.obj$valid.error)
+   TDboost.obj$oobag.improve <- c(object$oobag.improve, TDboost.obj$oobag.improve)
+   TDboost.obj$trees         <- c(object$trees, TDboost.obj$trees)
+   TDboost.obj$c.splits      <- c(object$c.splits, TDboost.obj$c.splits)
 
-   # cv.error not updated when using NPtweedie.more
-   NPtweedie.obj$cv.error      <- object$cv.error
+   # cv.error not updated when using TDboost.more
+   TDboost.obj$cv.error      <- object$cv.error
 
-   NPtweedie.obj$n.trees        <- length(NPtweedie.obj$trees)
-   NPtweedie.obj$distribution   <- object$distribution
-   NPtweedie.obj$train.fraction <- object$train.fraction
-   NPtweedie.obj$shrinkage      <- object$shrinkage
-   NPtweedie.obj$bag.fraction   <- object$bag.fraction
-   NPtweedie.obj$var.type       <- object$var.type
-   NPtweedie.obj$var.monotone   <- object$var.monotone
-   NPtweedie.obj$var.names      <- object$var.names
-   NPtweedie.obj$interaction.depth <- object$interaction.depth
-   NPtweedie.obj$n.minobsinnode    <- object$n.minobsinnode
-   NPtweedie.obj$nTrain            <- object$nTrain
-   NPtweedie.obj$Terms             <- object$Terms
-   NPtweedie.obj$var.levels        <- object$var.levels
-   NPtweedie.obj$verbose           <- verbose
+   TDboost.obj$n.trees        <- length(TDboost.obj$trees)
+   TDboost.obj$distribution   <- object$distribution
+   TDboost.obj$train.fraction <- object$train.fraction
+   TDboost.obj$shrinkage      <- object$shrinkage
+   TDboost.obj$bag.fraction   <- object$bag.fraction
+   TDboost.obj$var.type       <- object$var.type
+   TDboost.obj$var.monotone   <- object$var.monotone
+   TDboost.obj$var.names      <- object$var.names
+   TDboost.obj$interaction.depth <- object$interaction.depth
+   TDboost.obj$n.minobsinnode    <- object$n.minobsinnode
+   TDboost.obj$nTrain            <- object$nTrain
+   TDboost.obj$Terms             <- object$Terms
+   TDboost.obj$var.levels        <- object$var.levels
+   TDboost.obj$verbose           <- verbose
 
    if(!is.null(object$data))
    {
-      NPtweedie.obj$data <- object$data
+      TDboost.obj$data <- object$data
    }
    else
    {
-      NPtweedie.obj$data <- NULL
-      NPtweedie.obj$m <- object$m
+      TDboost.obj$data <- NULL
+      TDboost.obj$m <- object$m
    }
 
-   class(NPtweedie.obj) <- "NPtweedie"
-   return(NPtweedie.obj)
+   class(TDboost.obj) <- "TDboost"
+   return(TDboost.obj)
 }
 
 
-NPtweedie.fit <- function(x,y,
+TDboost.fit <- function(x,y,
                     offset = NULL,
                     misc = NULL,
                     distribution = list(name = "EDM", alpha = 1.5),
@@ -478,7 +478,7 @@ NPtweedie.fit <- function(x,y,
       else if(is.factor(x[,i]))
       {
          if(length(levels(x[,i]))>1024)
-            stop("NPtweedie does not currently handle categorical variables with more than 1024 levels. Variable ",i,": ",var.names[i]," has ",length(levels(x[,i]))," levels.")
+            stop("TDboost does not currently handle categorical variables with more than 1024 levels. Variable ",i,": ",var.names[i]," has ",length(levels(x[,i]))," levels.")
          var.levels[[i]] <- levels(x[,i])
          x[,i] <- as.numeric(x[,i])-1
          var.type[i] <- max(x[,i],na.rm=TRUE)+1
@@ -549,7 +549,7 @@ NPtweedie.fit <- function(x,y,
       stop("var.monotone must be -1, 0, or 1")
    }
    fError <- FALSE
-   NPtweedie.obj <- .Call("NPtweedie",
+   TDboost.obj <- .Call("TDboost",
                     Y=as.double(y),
                     Offset=as.double(offset),
                     X=as.double(x),
@@ -571,41 +571,41 @@ NPtweedie.fit <- function(x,y,
                     n.cat.splits.old=as.integer(0),
                     n.trees.old=as.integer(0),
                     verbose=as.integer(verbose),
-                    PACKAGE = "NPtweedie")
-   names(NPtweedie.obj) <- c("initF","fit","train.error","valid.error",
+                    PACKAGE = "TDboost")
+   names(TDboost.obj) <- c("initF","fit","train.error","valid.error",
                        "oobag.improve","trees","c.splits")
 
-   NPtweedie.obj$bag.fraction <- bag.fraction
-   NPtweedie.obj$distribution <- distribution
-   NPtweedie.obj$interaction.depth <- interaction.depth
-   NPtweedie.obj$n.minobsinnode <- n.minobsinnode
-   NPtweedie.obj$n.trees <- length(NPtweedie.obj$trees)
-   NPtweedie.obj$nTrain <- nTrain
-   NPtweedie.obj$response.name <- response.name
-   NPtweedie.obj$shrinkage <- shrinkage
-   NPtweedie.obj$train.fraction <- train.fraction
-   NPtweedie.obj$var.levels <- var.levels
-   NPtweedie.obj$var.monotone <- var.monotone
-   NPtweedie.obj$var.names <- var.names
-   NPtweedie.obj$var.type <- var.type
-   NPtweedie.obj$verbose <- verbose
-   NPtweedie.obj$Terms <- NULL
+   TDboost.obj$bag.fraction <- bag.fraction
+   TDboost.obj$distribution <- distribution
+   TDboost.obj$interaction.depth <- interaction.depth
+   TDboost.obj$n.minobsinnode <- n.minobsinnode
+   TDboost.obj$n.trees <- length(TDboost.obj$trees)
+   TDboost.obj$nTrain <- nTrain
+   TDboost.obj$response.name <- response.name
+   TDboost.obj$shrinkage <- shrinkage
+   TDboost.obj$train.fraction <- train.fraction
+   TDboost.obj$var.levels <- var.levels
+   TDboost.obj$var.monotone <- var.monotone
+   TDboost.obj$var.names <- var.names
+   TDboost.obj$var.type <- var.type
+   TDboost.obj$verbose <- verbose
+   TDboost.obj$Terms <- NULL
 
    if(keep.data)
    {
-      NPtweedie.obj$data <- list(y=y,x=x,x.order=x.order,offset=offset,Misc=Misc,w=w)
+      TDboost.obj$data <- list(y=y,x=x,x.order=x.order,offset=offset,Misc=Misc,w=w)
    }
    else
    {
-      NPtweedie.obj$data <- NULL
+      TDboost.obj$data <- NULL
    }
 
-   class(NPtweedie.obj) <- "NPtweedie"
-   return(NPtweedie.obj)
+   class(TDboost.obj) <- "TDboost"
+   return(TDboost.obj)
 }
 
 
-NPtweedie <- function(formula = formula(data),
+TDboost <- function(formula = formula(data),
                 distribution = list(name = "EDM", alpha = 1.5),
                 data = list(),
                 weights,
@@ -652,7 +652,7 @@ NPtweedie <- function(formula = formula(data),
       {
          if(verbose) cat("CV:",i.cv,"\n")
          i <- order(cv.group==i.cv)
-         NPtweedie.obj <- NPtweedie.fit(x[i.train,,drop=FALSE][i,,drop=FALSE], 
+         TDboost.obj <- TDboost.fit(x[i.train,,drop=FALSE][i,,drop=FALSE], 
                             y[i.train][i],
                             offset = offset[i.train][i],
                             distribution = distribution,
@@ -668,12 +668,12 @@ NPtweedie <- function(formula = formula(data),
                             verbose = verbose,
                             var.names = var.names,
                             response.name = response.name)
-         cv.error <- cv.error + NPtweedie.obj$valid.error*sum(cv.group==i.cv)
+         cv.error <- cv.error + TDboost.obj$valid.error*sum(cv.group==i.cv)
       }
       cv.error <- cv.error/length(i.train)
    }
 
-   NPtweedie.obj <- NPtweedie.fit(x,y,
+   TDboost.obj <- TDboost.fit(x,y,
                       offset = offset,
                       distribution = distribution,
                       w = w,
@@ -688,15 +688,15 @@ NPtweedie <- function(formula = formula(data),
                       verbose = verbose,
                       var.names = var.names,
                       response.name = response.name)
-   NPtweedie.obj$Terms <- Terms
-   NPtweedie.obj$cv.error <- cv.error
-   NPtweedie.obj$cv.folds <- cv.folds
+   TDboost.obj$Terms <- Terms
+   TDboost.obj$cv.error <- cv.error
+   TDboost.obj$cv.folds <- cv.folds
 
-   return(NPtweedie.obj)
+   return(TDboost.obj)
 }
 
 
-NPtweedie.perf <- function(object,
+TDboost.perf <- function(object,
             plot.it=TRUE,
             oobag.curve=FALSE,
             overlay=TRUE,
@@ -722,7 +722,7 @@ NPtweedie.perf <- function(object,
 
    if(method == "OOB")
    {
-      warning("OOB generally underestimates the optimal number of iterations although predictive performance is reasonably competitive. Using cv.folds>0 when calling NPtweedie usually results in improved predictive performance.")
+      warning("OOB generally underestimates the optimal number of iterations although predictive performance is reasonably competitive. Using cv.folds>0 when calling TDboost usually results in improved predictive performance.")
    }
 
    if(method == "test")
@@ -734,9 +734,9 @@ NPtweedie.perf <- function(object,
    if(method == "cv")
    {
       if(is.null(object$cv.error))
-         stop("In order to use method=\"cv\" NPtweedie must be called with cv.folds>1.")
+         stop("In order to use method=\"cv\" TDboost must be called with cv.folds>1.")
       if(length(object$cv.error) < object$n.trees)
-         warning("cross-validation error is not computed for any additional iterations run using NPtweedie.more().")
+         warning("cross-validation error is not computed for any additional iterations run using TDboost.more().")
       best.iter.cv <- which.min(object$cv.error)
       best.iter <- best.iter.cv
    }
@@ -824,7 +824,7 @@ relative.influence <- function(object,
    return(rel.inf=rel.inf)
 }
 
-NPtweedie.loss <- function(y,f,w,offset,dist,baseline)
+TDboost.loss <- function(y,f,w,offset,dist,baseline)
 {
    if(!is.na(offset))
    {
@@ -836,10 +836,10 @@ NPtweedie.loss <- function(y,f,w,offset,dist,baseline)
           laplace = weighted.mean(abs(y-f),w) - baseline,
           adaboost = weighted.mean(exp(-(2*y-1)*f),w) - baseline,
           poisson = -2*weighted.mean(y*f-exp(f),w) - baseline,
-          stop(paste("Distribution",dist,"is not yet supported for method=permutation.test.NPtweedie")))
+          stop(paste("Distribution",dist,"is not yet supported for method=permutation.test.TDboost")))
 }
 
-permutation.test.NPtweedie <- function(object,
+permutation.test.TDboost <- function(object,
                                  n.trees)
 {
    # get variables used in the model
@@ -855,11 +855,11 @@ permutation.test.NPtweedie <- function(object,
       Misc        <- object$data$Misc
       w           <- object$data$w
       x <- matrix(object$data$x,ncol=length(object$var.names))
-      object$Terms <- NULL # this makes predict.NPtweedie take x as it is
+      object$Terms <- NULL # this makes predict.TDboost take x as it is
    }
    else
    {
-      stop("Model was fit with keep.data=FALSE. permutation.test.NPtweedie has not been implemented for that case.")
+      stop("Model was fit with keep.data=FALSE. permutation.test.TDboost has not been implemented for that case.")
    }
 
    # the index shuffler
@@ -868,8 +868,8 @@ permutation.test.NPtweedie <- function(object,
    {
       x[ ,i.vars[i]]  <- x[j,i.vars[i]]
 
-      new.pred <- predict.NPtweedie(object,newdata=x,n.trees=n.trees)
-      rel.inf[i.vars[i]] <- NPtweedie.loss(y,new.pred,w,os,
+      new.pred <- predict.TDboost(object,newdata=x,n.trees=n.trees)
+      rel.inf[i.vars[i]] <- TDboost.loss(y,new.pred,w,os,
                                      object$distribution$name,
                                      object$train.error[n.trees])
 
@@ -880,7 +880,7 @@ permutation.test.NPtweedie <- function(object,
 }
 
 
-summary.NPtweedie <- function(object,
+summary.TDboost <- function(object,
                         cBars=length(object$var.names),
                         n.trees=object$n.trees,
                         plotit=TRUE,
@@ -895,7 +895,7 @@ summary.NPtweedie <- function(object,
    }
    if(n.trees > object$n.trees)
    {
-      warning("Exceeded total number of NPtweedie terms. Results use n.trees=",object$n.trees," terms.\n")
+      warning("Exceeded total number of TDboost terms. Results use n.trees=",object$n.trees," terms.\n")
       n.trees <- object$n.trees
    }
 

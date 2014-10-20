@@ -23,7 +23,7 @@
 #include "node_continuous.h"
 #include "node_categorical.h"
 
-#define NODEFACTORY_NODNPtweedie_RESERVE ((unsigned long)50)
+#define NODEFACTORY_NODTDboost_RESERVE ((unsigned long)50)
 
 using namespace std;
 
@@ -33,13 +33,13 @@ public:
     CNodeFactory();
     ~CNodeFactory();
 
-    NPtweedieRESULT Initialize(unsigned long cDepth);
+    TDboostRESULT Initialize(unsigned long cDepth);
     CNodeTerminal* GetNewNodeTerminal();
     CNodeContinuous* GetNewNodeContinuous();
     CNodeCategorical* GetNewNodeCategorical();
-    NPtweedieRESULT RecycleNode(CNodeTerminal *pNode);
-    NPtweedieRESULT RecycleNode(CNodeContinuous *pNode);
-    NPtweedieRESULT RecycleNode(CNodeCategorical *pNode);
+    TDboostRESULT RecycleNode(CNodeTerminal *pNode);
+    TDboostRESULT RecycleNode(CNodeContinuous *pNode);
+    TDboostRESULT RecycleNode(CNodeCategorical *pNode);
 
 private:
     stack<PCNodeTerminal> TerminalStack;
@@ -50,9 +50,9 @@ private:
     CNodeContinuous* pNodeContinuousTemp;
     CNodeCategorical* pNodeCategoricalTemp;
 
-    CNodeTerminal aBlockTerminal[NODEFACTORY_NODNPtweedie_RESERVE];
-    CNodeContinuous aBlockContinuous[NODEFACTORY_NODNPtweedie_RESERVE];
-    CNodeCategorical aBlockCategorical[NODEFACTORY_NODNPtweedie_RESERVE];
+    CNodeTerminal aBlockTerminal[NODEFACTORY_NODTDboost_RESERVE];
+    CNodeContinuous aBlockContinuous[NODEFACTORY_NODTDboost_RESERVE];
+    CNodeCategorical aBlockCategorical[NODEFACTORY_NODTDboost_RESERVE];
 };
 
 #endif // NODEFACTORY_H

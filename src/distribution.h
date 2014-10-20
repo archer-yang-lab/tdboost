@@ -31,7 +31,7 @@ public:
     CDistribution();
     virtual ~CDistribution();
 
-    virtual NPtweedieRESULT ComputeWorkingResponse(double *adY,
+    virtual TDboostRESULT ComputeWorkingResponse(double *adY,
                                            double *adMisc,
                                            double *adOffset,
                                            double *adF, 
@@ -40,7 +40,7 @@ public:
                                            bool *afInBag,
                                            unsigned long nTrain) = 0;
 
-    virtual NPtweedieRESULT InitF(double *adY,
+    virtual TDboostRESULT InitF(double *adY,
                           double *adMisc,
                           double *adOffset,
                           double *adWeight,
@@ -54,7 +54,7 @@ public:
                             double *adF,
                             unsigned long cLength) = 0;
 
-    virtual NPtweedieRESULT FitBestConstant(double *adY,
+    virtual TDboostRESULT FitBestConstant(double *adY,
                                     double *adMisc,
                                     double *adOffset,
                                     double *adW,

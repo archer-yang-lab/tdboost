@@ -1,4 +1,4 @@
-Package: NPtweedie
+Package: TDboost
 Title: Nonparametric Multiple Expectile Regression via ER-Boost.
 Version: 1.2
 Date: 2013-10-11
@@ -7,6 +7,6 @@ Maintainer: Yi Yang <yiyang@umn.edu>
 Depends: R (>= 2.12.0), lattice, splines, tweedie
 Description: Expectile regression is a nice tool for estimating the conditional expectiles of a response variable given a set of covariates. This package implements a regression tree based gradient boosting estimator for nonparametric multiple expectile regression. 
 License: GPL (>= 2)
-URL: http://code.google.com/p/NPtweedie/
+URL: http://code.google.com/p/TDboost/
 Packaged: 2012-02-21 06:53:12 UTC; yiyang
 Date/Publication: 2013-10-11 08:00:50

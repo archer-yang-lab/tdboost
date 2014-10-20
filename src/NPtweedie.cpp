@@ -5,9 +5,9 @@
 //------------------------------------------------------------------------------
 //  by Greg Ridgeway  Copyright (C) 2003
 #include<vector>
-#include "NPtweedie.h"
+#include "TDboost.h"
 
-unsigned long NPtweedie_setup
+unsigned long TDboost_setup
 (
     double *adY,
     double *adOffset,
@@ -34,7 +34,7 @@ unsigned long NPtweedie_setup
 
     hr = pData->SetData(adX,aiXOrder,adY,adOffset,adWeight,adMisc,
                         cRows,cCols,acVarClasses,alMonotoneVar);
-    if(NPtweedie_FAILED(hr))
+    if(TDboost_FAILED(hr))
     {
         goto Error;
     }
@@ -46,7 +46,7 @@ unsigned long NPtweedie_setup
         pDist = new CEDM(adMisc[0]);
         if(pDist==NULL)
         {
-            hr = NPtweedie_OUTOFMEMORY;
+            hr = TDboost_OUTOFMEMORY;
             goto Error;
         }
     }
@@ -56,7 +56,7 @@ unsigned long NPtweedie_setup
 
     if(pDist==NULL)
     {
-        hr = NPtweedie_INVALIDARG;
+        hr = TDboost_INVALIDARG;
         goto Error;
     }
 
@@ -68,9 +68,9 @@ Error:
 
 
 
-NPtweedieRESULT NPtweedie_transfer_to_R
+TDboostRESULT TDboost_transfer_to_R
 (
-    CNPtweedie *pNPtweedie,
+    CTDboost *pTDboost,
     VEC_VEC_CATEGORIES &vecSplitCodes,
     int *aiSplitVar,
     double *adSplitPoint,
@@ -83,9 +83,9 @@ NPtweedieRESULT NPtweedie_transfer_to_R
     int cCatSplitsOld
 )
 {
-    NPtweedieRESULT hr = NPtweedie_OK;
+    TDboostRESULT hr = TDboost_OK;
 
-    hr = pNPtweedie->TransferTreeToRList(aiSplitVar,
+    hr = pTDboost->TransferTreeToRList(aiSplitVar,
                                    adSplitPoint,
                                    aiLeftNode,
                                    aiRightNode,
@@ -95,7 +95,7 @@ NPtweedieRESULT NPtweedie_transfer_to_R
                                    adPred,
                                    vecSplitCodes,
                                    cCatSplitsOld);
-    if(NPtweedie_FAILED(hr)) goto Error;
+    if(TDboost_FAILED(hr)) goto Error;
 
 Cleanup:
     return hr;
@@ -104,7 +104,7 @@ Error:
 }
 
 
-NPtweedieRESULT NPtweedie_transfer_catsplits_to_R
+TDboostRESULT TDboost_transfer_catsplits_to_R
 (
     int iCatSplit,
     VEC_VEC_CATEGORIES &vecSplitCodes,
@@ -118,7 +118,7 @@ NPtweedieRESULT NPtweedie_transfer_catsplits_to_R
         aiSplitCodes[i] = vecSplitCodes[iCatSplit][i];
     }
 
-    return NPtweedie_OK;
+    return TDboost_OK;
 }
 
 

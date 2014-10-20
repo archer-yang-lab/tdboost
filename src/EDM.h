@@ -16,7 +16,7 @@ public:
 
     virtual ~CEDM();
 
-    NPtweedieRESULT ComputeWorkingResponse(double *adY,
+    TDboostRESULT ComputeWorkingResponse(double *adY,
                                    double *adMisc,
                                    double *adOffset,
                                    double *adF, 
@@ -25,14 +25,14 @@ public:
                                    bool *afInBag,
                                    unsigned long nTrain);
 
-    NPtweedieRESULT InitF(double *adY, 
+    TDboostRESULT InitF(double *adY, 
                     double *adMisc,
                     double *adOffset,
                     double *adWeight,
                     double &dInitF, 
                     unsigned long cLength);
 
-    NPtweedieRESULT FitBestConstant(double *adY,
+    TDboostRESULT FitBestConstant(double *adY,
                               double *adMisc,
                               double *adOffset,
                               double *adW,

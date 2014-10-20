@@ -1,4 +1,4 @@
-//  NPtweedie by Yi Yang and Hui Zou  Copyright (C) 2012
+//  TDboost by Yi Yang and Hui Zou  Copyright (C) 2012
 #include "EDM.h"
 
 CEDM::CEDM(double dAlpha)
@@ -12,7 +12,7 @@ CEDM::~CEDM()
 }
 
 // compute gradient function
-NPtweedieRESULT CEDM::ComputeWorkingResponse 
+TDboostRESULT CEDM::ComputeWorkingResponse 
 (
     double *adY,
     double *adMisc,
@@ -24,13 +24,13 @@ NPtweedieRESULT CEDM::ComputeWorkingResponse
     unsigned long nTrain
 )
 {
-	NPtweedieRESULT hr = NPtweedie_OK;
+	TDboostRESULT hr = TDboost_OK;
     unsigned long i = 0;
     double dF = 0.0;
     
     if((adY == NULL) || (adF == NULL) || (adZ == NULL) || (adWeight == NULL))
     {
-        hr = NPtweedie_INVALIDARG;
+        hr = TDboost_INVALIDARG;
         goto Error;
     }
     if(adOffset == NULL)
@@ -100,7 +100,7 @@ double CEDM::Deviance
 
 
 // compute Initial value
-NPtweedieRESULT CEDM::InitF
+TDboostRESULT CEDM::InitF
 (
     double *adY,
     double *adMisc,
@@ -133,7 +133,7 @@ NPtweedieRESULT CEDM::InitF
 
     dInitF = log(dSum/dDenom);
 
-	return NPtweedie_OK;
+	return TDboost_OK;
 
 }
 
@@ -142,7 +142,7 @@ NPtweedieRESULT CEDM::InitF
 
 
 
-NPtweedieRESULT CEDM::FitBestConstant
+TDboostRESULT CEDM::FitBestConstant
 (
     double *adY,
     double *adMisc,
@@ -160,7 +160,7 @@ NPtweedieRESULT CEDM::FitBestConstant
 )
 {
 
-    NPtweedieRESULT hr = NPtweedie_OK;
+    TDboostRESULT hr = TDboost_OK;
     double dF = 0.0;
     unsigned long iObs = 0;
     unsigned long iNode = 0;

@@ -25,9 +25,9 @@ public:
 	CDataset();
 	~CDataset();
 
-    NPtweedieRESULT ResetWeights();
+    TDboostRESULT ResetWeights();
 
-    NPtweedieRESULT SetData(double *adX,
+    TDboostRESULT SetData(double *adX,
                     int *aiXOrder,
                     double *adY,
                     double *adOffset,
@@ -38,15 +38,15 @@ public:
                     int *acVarClasses,
                     int *alMonotoneVar);
 
-    NPtweedieRESULT Entry(int iRow,
+    TDboostRESULT Entry(int iRow,
                   int iCol,
                   double &dValue)
     {
-        NPtweedieRESULT hr = NPtweedie_OK;
+        TDboostRESULT hr = TDboost_OK;
 
         if((iRow >= cRows) || (iCol >= cCols))
         {
-            hr = NPtweedie_INVALIDARG;
+            hr = TDboost_INVALIDARG;
             goto Error;
         }
 

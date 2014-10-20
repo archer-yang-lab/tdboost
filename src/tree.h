@@ -14,8 +14,8 @@
 //
 //------------------------------------------------------------------------------
 
-#ifndef TRENPtweedie_H
-#define TRENPtweedie_H
+#ifndef TRETDboost_H
+#define TRETDboost_H
 
 #include <cstdio>
 #include <cfloat>
@@ -32,8 +32,8 @@ public:
     CCARTTree();
     ~CCARTTree();
 
-    NPtweedieRESULT Initialize(CNodeFactory *pNodeFactory);
-    NPtweedieRESULT grow(double *adZ, 
+    TDboostRESULT Initialize(CNodeFactory *pNodeFactory);
+    TDboostRESULT grow(double *adZ, 
                  CDataset *pData, 
                  double *adAlgW,
                  double *adF,
@@ -46,9 +46,9 @@ public:
                  unsigned long *aiNodeAssign,
                  CNodeSearch *aNodeSearch,
                  VEC_P_NODETERMINAL &vecpTermNodes);
-    NPtweedieRESULT Reset();
+    TDboostRESULT Reset();
 
-    NPtweedieRESULT TransferTreeToRList(CDataset *pData,
+    TDboostRESULT TransferTreeToRList(CDataset *pData,
                                 int *aiSplitVar,
                                 double *adSplitPoint,
                                 int *aiLeftNode,
@@ -61,36 +61,36 @@ public:
                                 int cCatSplitsOld,
                                 double dShrinkage);
 
-    NPtweedieRESULT PredictValid(CDataset *pData, 
+    TDboostRESULT PredictValid(CDataset *pData, 
                          unsigned long nValid, 
                          double *adFadj);
 
-    NPtweedieRESULT Predict(double *adX,
+    TDboostRESULT Predict(double *adX,
                     unsigned long cRow, 
                     unsigned long cCol, 
                     unsigned long iRow, 
                     double &dFadj);
-    NPtweedieRESULT Adjust(unsigned long *aiNodeAssign,
+    TDboostRESULT Adjust(unsigned long *aiNodeAssign,
                    double *adFadj,
                    unsigned long cTrain,
                    VEC_P_NODETERMINAL &vecpTermNodes,
                    unsigned long cMinObsInNode);
 
-    NPtweedieRESULT GetNodeCount(int &cNodes);
-    NPtweedieRESULT SetShrinkage(double dShrink)
+    TDboostRESULT GetNodeCount(int &cNodes);
+    TDboostRESULT SetShrinkage(double dShrink)
     {
         this->dShrink = dShrink;
-        return NPtweedie_OK;
+        return TDboost_OK;
     }
     double GetShrinkage() {return dShrink;}
 
-    NPtweedieRESULT Print();
-    NPtweedieRESULT GetVarRelativeInfluence(double *adRelInf);
+    TDboostRESULT Print();
+    TDboostRESULT GetVarRelativeInfluence(double *adRelInf);
 
 
     double dError; // total squared error before carrying out the splits
 private:
-    NPtweedieRESULT GetBestSplit(CDataset *pData,
+    TDboostRESULT GetBestSplit(CDataset *pData,
                          unsigned long nTrain,
                          CNodeSearch *aNodeSearch,
                          unsigned long cTerminalNodes,
@@ -130,7 +130,7 @@ private:
 typedef CCARTTree *PCCARTTree;
 
 
-#endif // TRENPtweedie_H
+#endif // TRETDboost_H
 
 
 
