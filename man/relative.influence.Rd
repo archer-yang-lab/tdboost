@@ -27,7 +27,7 @@ methods for computing the relative influence in \code{\link{summary.TDboost}}.
 Returns an unprocessed vector of estimated relative influences.
 }
 \references{
-Yang, Y. and Zou, H. (2013), \dQuote{A Boosted Nonparametric Tweedie Model for Insurance Premium.} Preprint.
+Yang, Y., Qian, W. and Zou, H. (2013), \dQuote{A Boosted Nonparametric Tweedie Model for Insurance Premium.} Preprint.
 
 
 

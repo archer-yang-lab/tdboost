@@ -47,7 +47,7 @@ graphics and only returns the grid of evaluation points and their average
 predictions.
 }
 \references{
-Yang, Y. and Zou, H. (2013), \dQuote{A Boosted Nonparametric Tweedie Model for Insurance Premium.} Preprint.
+Yang, Y., Qian, W. and Zou, H. (2013), \dQuote{A Boosted Nonparametric Tweedie Model for Insurance Premium.} Preprint.
 
 
 

@@ -6,7 +6,7 @@
 \description{Fits TDboost Tweedie Regression models.}
 \usage{
 TDboost(formula = formula(data),
-    distribution = list(name="EDM",alpha=0.5),
+    distribution = list(name="EDM",alpha=1.5),
     data = list(),
     weights,
     var.monotone = NULL,
@@ -23,7 +23,7 @@ TDboost(formula = formula(data),
 TDboost.fit(x,y,
         offset = NULL,
         misc = NULL,
-        distribution = list(name="EDM",alpha=0.5),
+        distribution = list(name="EDM",alpha=1.5),
         w = NULL,
         var.monotone = NULL,
         n.trees = 100,
@@ -51,7 +51,7 @@ TDboost.more(object,
    resupply the offset to \code{\link{TDboost.more}}.}
 \item{distribution}{a list with a component \code{name} specifying the distribution 
    and any additional parameters needed. Tweedie regression is available and \code{distribution} must a list of the form 
-   \code{list(name="EDM",alpha=0.25)} where \code{alpha} is the index parameter. The current version's Tweedie regression methods do 
+   \code{list(name="EDM",alpha=0.25)} where \code{alpha} is the index parameter that must be in (1,2). The current version's Tweedie regression methods do 
    not handle non-constant weights and will stop.}
 \item{data}{an optional data frame containing the variables in the model. By
    default the variables are taken from \code{environment(formula)}, typically 
@@ -140,8 +140,7 @@ For general practice \code{TDboost} is preferable.
 \code{\link{TDboost.object}}.
 }
 \references{
-Yang, Y. and Zou, H. (2013), \dQuote{A Boosted Nonparametric Tweedie Model for Insurance Premium.} Preprint.
-
+Yang, Y., Qian, W. and Zou, H. (2013), \dQuote{A Boosted Nonparametric Tweedie Model for Insurance Premium.} Preprint.
 
 
 G. Ridgeway (1999). \dQuote{The state of boosting,} \emph{Computing Science and
@@ -168,35 +167,15 @@ and Data Analysis} 38(4):367-378.
 \code{\link{summary.TDboost}},
 }
 \examples{
-
-N <- 200
-X1 <- runif(N)
-X2 <- 2*runif(N)
-X3 <- ordered(sample(letters[1:4],N,replace=TRUE),levels=letters[4:1])
-X4 <- factor(sample(letters[1:6],N,replace=TRUE))
-X5 <- factor(sample(letters[1:3],N,replace=TRUE))
-X6 <- 3*runif(N)
-mu <- c(-1,0,1,2)[as.numeric(X3)]
-
-SNR <- 10 # signal-to-noise ratio
-Y <- X1**1.5 + 2 * (X2**.5) + mu
-sigma <- sqrt(var(Y)/SNR)
-Y <- Y + rnorm(N,0,sigma)
-
-# introduce some missing values
-X1[sample(1:N,size=50)] <- NA
-X4[sample(1:N,size=30)] <- NA
-
-data <- data.frame(Y=Y,X1=X1,X2=X2,X3=X3,X4=X4,X5=X5,X6=X6)
-
-# fit initial model
+data(FHT)
+# training on data1
 TDboost1 <- TDboost(Y~X1+X2+X3+X4+X5+X6,         # formula
-    data=data,                   # dataset
+    data=data1,                   # dataset
     var.monotone=c(0,0,0,0,0,0), # -1: monotone decrease,
                                  # +1: monotone increase,
                                  #  0: no monotone restrictions
-    distribution=list(name="EDM",alpha=0.5),
-                                 # Tweedie
+    distribution=list(name="EDM",alpha=1.5),
+                                 # specify Tweedie index parameter
     n.trees=3000,                # number of trees
     shrinkage=0.005,             # shrinkage or learning rate,
                                  # 0.001 to 0.1 usually work
@@ -209,8 +188,7 @@ TDboost1 <- TDboost(Y~X1+X2+X3+X4+X5+X6,         # formula
     keep.data=TRUE,              # keep a copy of the dataset with the object
     verbose=TRUE)                # print out progress
 
-
-# check performance using a 50\% heldout test set
+# print out the optimal iteration number M
 best.iter <- TDboost.perf(TDboost1,method="test")
 print(best.iter)
 
@@ -223,22 +201,7 @@ print(best.iter)
 summary(TDboost1,n.trees=1)         # based on the first tree
 summary(TDboost1,n.trees=best.iter) # based on the estimated best number of trees
 
-# make some new data
-N <- 20
-X1 <- runif(N)
-X2 <- 2*runif(N)
-X3 <- ordered(sample(letters[1:4],N,replace=TRUE))
-X4 <- factor(sample(letters[1:6],N,replace=TRUE))
-X5 <- factor(sample(letters[1:3],N,replace=TRUE))
-X6 <- 3*runif(N)
-mu <- c(-1,0,1,2)[as.numeric(X3)]
-
-Y <- X1**1.5 + 2 * (X2**.5) + mu + rnorm(N,0,sigma)
-
-data2 <- data.frame(Y=Y,X1=X1,X2=X2,X3=X3,X4=X4,X5=X5,X6=X6)
-
-# predict on the new data using "best" number of trees
-# f.predict generally will be on the canonical scale
+# making prediction on data2
 f.predict <- predict.TDboost(TDboost1,data2,best.iter)
 
 # least squares error

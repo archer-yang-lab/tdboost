@@ -1,11 +1,14 @@
 Package: TDboost
-Title: A Boosted Nonparametric Tweedie Model.
+Title: A Boosted Nonparametric Tweedie Model
 Version: 1.0
 Date: 2013-10-11
 Author: Yi Yang <yiyang@umn.edu>, Wei Qian <weiqian@stat.umn.edu>, Hui Zou <hzou@stat.umn.edu>
 Maintainer: Yi Yang <yiyang@umn.edu>
-Depends: R (>= 2.12.0), lattice, splines, tweedie
-Description: This package implements a fully nonparametric Tweedie model using the gradient boosting. It is capable of fitting a flexible nonlinear model and capturing interactions among predictors.
-License: GPL (>= 2)
+Depends: R (>= 2.12.0), lattice, splines
+Description: A fully nonparametric Tweedie model using the gradient boosting. It is capable of fitting a flexible nonlinear model and capturing interactions among predictors.
+LazyData: yes
+License: GPL-3
 Packaged: 2012-02-21 06:53:12 UTC; yiyang
+NeedsCompilation: yes
+Repository: CRAN
 Date/Publication: 2013-10-11 08:00:50

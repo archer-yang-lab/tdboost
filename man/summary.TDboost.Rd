@@ -50,7 +50,7 @@ Returns a data frame where the first component is the variable name and the
 second is the computed relative influence, normalized to sum to 100.
 }
 \references{
-Yang, Y. and Zou, H. (2013), \dQuote{A Boosted Nonparametric Tweedie Model for Insurance Premium.} Preprint.
+Yang, Y., Qian, W. and Zou, H. (2013), \dQuote{A Boosted Nonparametric Tweedie Model for Insurance Premium.} Preprint.
 
 
 
