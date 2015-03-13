@@ -3,9 +3,6 @@ exportPattern("^[^\\.]")
 
 useDynLib(TDboost)
 
-# ns from splines is used in one of the examples
-importFrom(splines)
-
 # xyplot is used, which means several functions internal
 # to lattice will also be used. Import the lot.
 import(lattice)
