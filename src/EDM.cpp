@@ -74,23 +74,36 @@ double CEDM::Deviance
     double dW = 0.0;
     double dF = 0.0;
     
-	if(adOffset == NULL)
-    {
-      	for(i=0; i<cLength; i++)
-      	{
-         	dL += adWeight[i]*(-adY[i] * exp((1.0-dAlpha)*adF[i])/(1.0-dAlpha) + exp((2.0-dAlpha)*adF[i])/(2.0-dAlpha));
-         	dW += adWeight[i];
-      	}
-    }
-	else
-	{
-      	for(i=0; i<cLength; i++)
-      	{
-         	dF = adF[i] + adOffset[i];
-         	dL += adWeight[i]*(-adY[i] * exp((1.0-dAlpha)*dF)/(1.0-dAlpha) + exp((2.0-dAlpha)*dF)/(2.0-dAlpha));
-         	dW += adWeight[i];
-      	}
-    }
+	if(dAlpha == 2.0){
+		if(adOffset == NULL){
+	      	for(i=0; i<cLength; i++){
+	         	dL += adWeight[i]*(adY[i] * exp(-adF[i]) + adF[i]);
+	         	dW += adWeight[i];
+	      	}
+	    }
+		else{
+	      	for(i=0; i<cLength; i++){
+	         	dF = adF[i] + adOffset[i];
+	         	dL += adWeight[i]*(adY[i] * exp(-dF) + dF);
+	         	dW += adWeight[i];
+	      	}
+	    }
+	}
+	else{
+		if(adOffset == NULL){
+	      	for(i=0; i<cLength; i++){
+	         	dL += adWeight[i]*(-adY[i] * exp((1.0-dAlpha)*adF[i])/(1.0-dAlpha) + exp((2.0-dAlpha)*adF[i])/(2.0-dAlpha));
+	         	dW += adWeight[i];
+	      	}
+	    }
+		else{
+	      	for(i=0; i<cLength; i++){
+	         	dF = adF[i] + adOffset[i];
+	         	dL += adWeight[i]*(-adY[i] * exp((1.0-dAlpha)*dF)/(1.0-dAlpha) + exp((2.0-dAlpha)*dF)/(2.0-dAlpha));
+	         	dW += adWeight[i];
+	      	}
+	    }	
+	}
 	
     return dL/dW;
 }

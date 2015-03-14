@@ -218,6 +218,17 @@ plot.TDboost(TDboost1,c(1,3),best.iter)
 # do another 20 iterations
 TDboost2 <- TDboost.more(TDboost1,20,
                  verbose=FALSE) # stop printing detailed progress
+
+# fit a gamma model (when alpha = 2.0)
+data2 <- data1[data1$Y!=0,]
+TDboost3 <- TDboost(Y~X1+X2+X3+X4+X5+X6,         # formula
+    data=data2,                   # dataset
+    distribution=list(name="EDM",alpha=2.0),
+    n.trees=5000, 				 # number of trees
+    cv.folds = 5,                # do 5-fold cross-validation
+    verbose=TRUE)                # print out progress
+best.iter2 <- TDboost.perf(TDboost3,method="cv")
+
 }
 \keyword{models}
 \keyword{nonlinear}
