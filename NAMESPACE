@@ -6,3 +6,7 @@ useDynLib(TDboost)
 # xyplot is used, which means several functions internal
 # to lattice will also be used. Import the lot.
 import(lattice)
+
+S3method("summary","TDboost")
+S3method("plot","TDboost")
+S3method("predict","TDboost")

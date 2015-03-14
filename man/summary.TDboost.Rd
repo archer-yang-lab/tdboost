@@ -59,11 +59,8 @@ Statistics} 31:172-181.
 
 \url{http://cran.r-project.org/web/packages/gbm/}\cr
 
-
 J.H. Friedman (2001). "Greedy Function Approximation: A Gradient Boosting
 Machine," Annals of Statistics 29(5):1189-1232.
-
-L. Breiman (2001). "Random Forests," Available at \url{ftp://ftp.stat.berkeley.edu/pub/users/breiman/randomforest2001.pdf}.
 
 }
 \author{Yi Yang \email{yiyang@umn.edu}, Wei Qian \email{weiqian@stat.umn.edu} and Hui Zou \email{hzou@stat.umn.edu}}
