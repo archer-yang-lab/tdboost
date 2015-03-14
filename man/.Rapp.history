@@ -1,42 +1,30 @@
 library(TDboost)
 data(FHT)
-ls()
-data2 <- data1[data1$Y!=0,]#
-TDboost3 <- TDboost(Y~X1+X2+X3+X4+X5+X6,         # formula#
-    data=data2,                   # dataset#
-    distribution=list(name="EDM",alpha=2.0),#
+TDboost1 <- TDboost(Y~X1+X2+X3+X4+X5+X6,         # formula#
+    data=data1,                   # dataset#
+    var.monotone=c(0,0,0,0,0,0), # -1: monotone decrease,#
+                                 # +1: monotone increase,#
+                                 #  0: no monotone restrictions#
+    distribution=list(name="EDM",alpha=1.5),#
+                                 # specify Tweedie index parameter#
     n.trees=3000,                # number of trees#
-    verbose=TRUE)
+    shrinkage=0.005,             # shrinkage or learning rate,#
+                                 # 0.001 to 0.1 usually work#
+    interaction.depth=3,         # 1: additive model, 2: two-way interactions, etc.#
+    bag.fraction = 0.5,          # subsampling fraction, 0.5 is probably best#
+    train.fraction = 0.5,        # fraction of data for training,#
+                                 # first train.fraction*N used for training#
+    n.minobsinnode = 10,         # minimum total weight needed in each node#
+    cv.folds = 5,                # do 5-fold cross-validation#
+    keep.data=TRUE,              # keep a copy of the dataset with the object#
+    verbose=TRUE)                # print out progress
+best.iter <- TDboost.perf(TDboost1,method="test")
+setwd('/Users/emeryyi/Dropbox/Research/googleproject/TDboost/man')
+data2 <- data1[data1$Y!=0,]#
 TDboost3 <- TDboost(Y~X1+X2+X3+X4+X5+X6,         # formula#
     data=data2,                   # dataset#
     distribution=list(name="EDM",alpha=2.0),#
     n.trees=3000, 				 # number of trees#
-    cv.folds = 5,                # do 5-fold cross-validation#
-    verbose=TRUE)                # print out progress
-best.iter2 <- TDboost.perf(TDboost3,method="cv")
-data2 <- data1[data1$Y!=0,]#
-TDboost3 <- TDboost(Y~X1+X2+X3+X4+X5+X6,         # formula#
-    data=data2,                   # dataset#
-    distribution=list(name="EDM",alpha=2.0),#
-    n.trees=5000, 				 # number of trees#
-    cv.folds = 5,                # do 5-fold cross-validation#
+    train.fraction = 0.5,        # fraction of data for training,#
     verbose=TRUE)                # print out progress#
-best.iter2 <- TDboost.perf(TDboost3,method="cv")
-data2 <- data1[data1$Y!=0,]#
-TDboost3 <- TDboost(Y~X1+X2+X3+X4+X5+X6,         # formula#
-    data=data2,                   # dataset#
-    distribution=list(name="EDM",alpha=2.0),#
-    n.trees=4000, 				 # number of trees#
-    cv.folds = 5,                # do 5-fold cross-validation#
-    verbose=TRUE)                # print out progress#
-best.iter2 <- TDboost.perf(TDboost3,method="cv")
-setwd('/Users/emeryyi/Dropbox/Research/googleproject/TDboost/man')
-# fit a gamma model (when alpha = 2.0)#
-data2 <- data1[data1$Y!=0,]#
-TDboost3 <- TDboost(Y~X1+X2+X3+X4+X5+X6,         # formula#
-    data=data2,                   # dataset#
-    distribution=list(name="EDM",alpha=2.0),#
-    n.trees=5000, 				 # number of trees#
-    cv.folds = 5,                # do 5-fold cross-validation#
-    verbose=TRUE)                # print out progress#
-best.iter2 <- TDboost.perf(TDboost3,method="cv")
+best.iter2 <- TDboost.perf(TDboost3,method="test")
