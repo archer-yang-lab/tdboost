@@ -37,7 +37,7 @@ with \code{cv.folds}>1}
 \code{TDboost.perf} returns the estimated optimal number of iterations. The method 
 of computation depends on the \code{method} argument.}
 \references{
-Yang, Y., Qian, W. and Zou, H. (2013), \dQuote{A Boosted Nonparametric Tweedie Model for Insurance Premium.} Preprint.
+Yang, Y., Qian, W. and Zou, H. (2013), \dQuote{A Boosted Tweedie Compound Poisson Model for Insurance Premium} Preprint.
 
 
 

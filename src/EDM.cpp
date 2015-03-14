@@ -259,17 +259,28 @@ double CEDM::BagImprovement
     double dF = 0.0;
 	double ddF = 0.0;
 
-    for(i=0; i<nTrain; i++)
-    {
-        if(!afInBag[i])
-        {
-			dF = adF[i] + ((adOffset==NULL) ? 0.0 : adOffset[i]);
-			ddF = dF + dStepSize*adFadj[i];
-         	dL += adWeight[i] * (-adY[i] * exp((1.0-dAlpha) * dF) / (1.0-dAlpha) + exp((2.0-dAlpha)* dF) / (2.0-dAlpha));
-         	dLadj += adWeight[i] * (-adY[i] * exp((1.0-dAlpha) * ddF) / (1.0-dAlpha) + exp((2.0-dAlpha)* ddF) / (2.0-dAlpha));    
-            dW += adWeight[i];
-        }
-    }
-
+	if(dAlpha == 2.0){
+		for(i=0; i<nTrain; i++){
+	        if(!afInBag[i]){
+				dF = adF[i] + ((adOffset==NULL) ? 0.0 : adOffset[i]);
+				ddF = dF + dStepSize*adFadj[i];
+	         	dL += adWeight[i] * (adY[i] * exp(-dF) + dF);
+	         	dLadj += adWeight[i] * (adY[i] * exp(-ddF) + ddF);    
+	            dW += adWeight[i];
+	        }
+	    }
+	}
+	else{
+		for(i=0; i<nTrain; i++){
+	        if(!afInBag[i]){
+				dF = adF[i] + ((adOffset==NULL) ? 0.0 : adOffset[i]);
+				ddF = dF + dStepSize*adFadj[i];
+	         	dL += adWeight[i] * (-adY[i] * exp((1.0-dAlpha) * dF) / (1.0-dAlpha) + exp((2.0-dAlpha)* dF) / (2.0-dAlpha));
+	         	dLadj += adWeight[i] * (-adY[i] * exp((1.0-dAlpha) * ddF) / (1.0-dAlpha) + exp((2.0-dAlpha)* ddF) / (2.0-dAlpha));    
+	            dW += adWeight[i];
+	        }
+	    }
+	}
+	
     return (dL-dLadj)/dW;
 }

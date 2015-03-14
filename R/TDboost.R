@@ -521,11 +521,11 @@ TDboost.fit <- function(x,y,
    {
       if(is.null(distribution$alpha))
       {
-         stop("For Tweedie models, the distribution parameter must be a list with a parameter 'alpha' indicating the index parameter rho, for example list(name=\"EDM\",alpha=1.5).")
+         stop("For Tweedie models, the distribution parameter must be a list with a parameter 'alpha' indicating the index parameter, for example list(name=\"EDM\",alpha=1.5).")
       } else
-      if((distribution$alpha<=1) || (distribution$alpha>=2))
+      if((distribution$alpha<=1) || (distribution$alpha>2))
       {
-         stop("alpha must be in (1,2).")
+         stop("alpha must be in (1,2].")
       }
       Misc <- c(alpha=distribution$alpha)
    }

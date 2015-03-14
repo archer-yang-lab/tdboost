@@ -16,7 +16,7 @@ There are two data sets, one for training and the other for testing. The trainin
   }
 }
 \references{
-Yang, Y., Qian, W. and Zou, H. (2013), \dQuote{A Boosted Nonparametric Tweedie Model for Insurance Premium.} Preprint.
+Yang, Y., Qian, W. and Zou, H. (2013), \dQuote{A Boosted Tweedie Compound Poisson Model for Insurance Premium} Preprint.
 }
 
 \examples{

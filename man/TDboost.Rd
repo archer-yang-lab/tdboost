@@ -51,7 +51,9 @@ TDboost.more(object,
    resupply the offset to \code{\link{TDboost.more}}.}
 \item{distribution}{a list with a component \code{name} specifying the distribution 
    and any additional parameters needed. Tweedie regression is available and \code{distribution} must a list of the form 
-   \code{list(name="EDM",alpha=0.25)} where \code{alpha} is the index parameter that must be in (1,2). The current version's Tweedie regression methods do 
+   \code{list(name="EDM",alpha=1.5)} where \code{alpha} is the index parameter that must be in (1,2]. 
+When \code{alpha=2}, the distribution reduces to gamma.
+  The current version's Tweedie regression methods do 
    not handle non-constant weights and will stop.}
 \item{data}{an optional data frame containing the variables in the model. By
    default the variables are taken from \code{environment(formula)}, typically 
@@ -140,7 +142,7 @@ For general practice \code{TDboost} is preferable.
 \code{\link{TDboost.object}}.
 }
 \references{
-Yang, Y., Qian, W. and Zou, H. (2013), \dQuote{A Boosted Nonparametric Tweedie Model for Insurance Premium.} Preprint.
+Yang, Y., Qian, W. and Zou, H. (2013), \dQuote{A Boosted Tweedie Compound Poisson Model for Insurance Premium} Preprint.
 
 
 G. Ridgeway (1999). \dQuote{The state of boosting,} \emph{Computing Science and

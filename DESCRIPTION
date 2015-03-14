@@ -1,6 +1,6 @@
 Package: TDboost
 Title: A Boosted Nonparametric Tweedie Model
-Version: 1.0
+Version: 1.1
 Date: 2013-10-11
 Author: Yi Yang <yiyang@umn.edu>, Wei Qian <weiqian@stat.umn.edu>, Hui Zou <hzou@stat.umn.edu>
 Maintainer: Yi Yang <yiyang@umn.edu>
