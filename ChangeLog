@@ -1,5 +1,8 @@
 CHANGELOG - Record of Changes for TDboost
 Please find below the list of the various changes and improvements that were part of each successive update.
 
+1.1:
+* [added] Now gamma distribution (alpha=2) is supported.
+
 1.0:
 * The initial release.
