@@ -39,18 +39,13 @@ of computation depends on the \code{method} argument.}
 \references{
 Yang, Y., Qian, W. and Zou, H. (2013), \dQuote{A Boosted Tweedie Compound Poisson Model for Insurance Premium} Preprint.
 
-
-
 G. Ridgeway (1999). \dQuote{The state of boosting,} \emph{Computing Science and
 Statistics} 31:172-181.
 
-\url{http://cran.r-project.org/web/packages/gbm/}\cr
-
  G. Ridgeway (2003). "A note on out-of-bag estimation for estimating the optimal
-number of boosting iterations," a working paper available at
-\url{http://www.i-pensieri.com/gregr/TDboost.shtml}.
+number of boosting iterations," Working paper.
 }
-\author{Yi Yang \email{yiyang@umn.edu}, Wei Qian \email{weiqian@stat.umn.edu} and Hui Zou \email{hzou@stat.umn.edu}}
+\author{Yi Yang \email{yi.yang6@mcgill.ca}, Wei Qian \email{wxqsma@rit.edu} and Hui Zou \email{hzou@stat.umn.edu}}
 \seealso{\code{\link{TDboost}}, \code{\link{TDboost.object}}}
 
 \keyword{nonlinear}

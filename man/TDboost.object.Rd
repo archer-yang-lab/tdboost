@@ -32,7 +32,7 @@ equal to the number of levels in the categorical split variable. -1 indicates
 left, +1 indicates right, and 0 indicates that the level was not present in the
 training data}
 }
-\author{Yi Yang \email{yiyang@umn.edu}, Wei Qian \email{weiqian@stat.umn.edu} and Hui Zou \email{hzou@stat.umn.edu}}
+\author{Yi Yang \email{yi.yang6@mcgill.ca}, Wei Qian \email{wxqsma@rit.edu} and Hui Zou \email{hzou@stat.umn.edu}}
 \seealso{
 \code{\link{TDboost}}
 }

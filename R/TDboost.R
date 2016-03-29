@@ -9,9 +9,10 @@
 
 
 predict.TDboost <- function(object,newdata,n.trees,
-                        single.tree = FALSE,
+                        single.tree = FALSE, type = c("response", "link"),
                         ...)
 {
+   type <- match.arg(type)
    if(!is.null(object$Terms))
    {
       x <- model.frame(terms(reformulate(object$var.names)),
@@ -73,7 +74,7 @@ predict.TDboost <- function(object,newdata,n.trees,
       warning("predict.TDboost does not add the offset to the predicted values.")
    }
 
-   return(predF)
+   return(switch(type, link = predF, response = exp(predF)))
 }
 
 

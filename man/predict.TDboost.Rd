@@ -9,6 +9,7 @@
         newdata,
         n.trees,
         single.tree=FALSE,
+		  type=c("response","link"),
         ...)
 }
 \arguments{
@@ -18,7 +19,11 @@
                   be a vector in which case predictions are returned for each
                   iteration specified}
   \item{single.tree}{If \code{single.tree=TRUE} then \code{predict.TDboost} returns
-                     only the predictions from tree(s) \code{n.trees}}
+                     only the predictions from tree(s) \code{n.trees}} 
+	\item{type}{
+	type of prediction required. \itemize{
+			\item Type \code{"response"} gives predicted response mu(x) = E(Y|X=x) for the regression problems. It is the default.
+			\item Type \code{"link"} gives the linear predictors x*b = log(mu(x)) = log(E(Y|X=x)) for the regression problems.}}
   \item{\dots}{ further arguments passed to or from other methods }
 }
 \details{
@@ -35,7 +40,7 @@ as the one originally used to fit the model.
 
 Returns a vector of predictions. By default the predictions are on the scale of f(x).
 }
-\author{Yi Yang \email{yiyang@umn.edu}, Wei Qian \email{weiqian@stat.umn.edu} and Hui Zou \email{hzou@stat.umn.edu}}
+\author{Yi Yang \email{yi.yang6@mcgill.ca}, Wei Qian \email{wxqsma@rit.edu} and Hui Zou \email{hzou@stat.umn.edu}}
 \seealso{
 \code{\link{TDboost}}, \code{\link{TDboost.object}}
 }
