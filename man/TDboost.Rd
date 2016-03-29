@@ -118,7 +118,7 @@ variable.}
 
 }
 \details{
-This package implements a regression tree based gradient boosting estimator for nonparametric multiple Tweedie regression. The code is a modified version of \code{gbm} library (\url{}) originally written by Greg Ridgeway.
+This package implements a regression tree based gradient boosting estimator for nonparametric multiple Tweedie regression. The code is a modified version of \code{gbm} library originally written by Greg Ridgeway.
 
 Boosting is the process of iteratively adding basis functions in a greedy
 fashion so that each additional basis function further reduces the selected
