@@ -134,7 +134,7 @@ TDboostRESULT CNodeCategorical::RecycleSelf
     TDboostRESULT hr = TDboost_OK;
     hr = pNodeFactory->RecycleNode(this);
     return hr;
-};
+}
 
 
 

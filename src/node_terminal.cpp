@@ -104,7 +104,7 @@ TDboostRESULT CNodeTerminal::RecycleSelf
 {
     pNodeFactory->RecycleNode(this);
     return TDboost_OK;
-};
+}
 
 
 

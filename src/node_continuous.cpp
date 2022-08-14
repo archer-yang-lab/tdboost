@@ -117,7 +117,7 @@ TDboostRESULT CNodeContinuous::RecycleSelf
     TDboostRESULT hr = TDboost_OK;
     pNodeFactory->RecycleNode(this);
     return hr;
-};
+}
 
 
 
